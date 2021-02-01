@@ -6,15 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | Hexo</title>
+  <title>CDH，HDP，Apache Hadoop之间的关系 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+  <meta name="description" content="一、综述目前Hadoop发行版非常多，有华为发行版、Intel发行版、Cloudera发行版（CDH）等，所有这些发行版均是基于Apache Hadoop衍生出来的，之所以有这么多的版本，完全是由Apache Hadoop的开源协议决定的：任何人可以对其进行修改，并作为开源或商业产品发布/销售。(http://www.apache.org/licenses/LICENSE-2.0)。CDH全称是C">
+<meta name="keywords" content="大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CDH，HDP，Apache Hadoop之间的关系">
+<meta property="og:url" content="http://yoursite.com/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、综述目前Hadoop发行版非常多，有华为发行版、Intel发行版、Cloudera发行版（CDH）等，所有这些发行版均是基于Apache Hadoop衍生出来的，之所以有这么多的版本，完全是由Apache Hadoop的开源协议决定的：任何人可以对其进行修改，并作为开源或商业产品发布/销售。(http://www.apache.org/licenses/LICENSE-2.0)。CDH全称是C">
 <meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2021-02-01T03:26:49.882Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="CDH，HDP，Apache Hadoop之间的关系">
+<meta name="twitter:description" content="一、综述目前Hadoop发行版非常多，有华为发行版、Intel发行版、Cloudera发行版（CDH）等，所有这些发行版均是基于Apache Hadoop衍生出来的，之所以有这么多的版本，完全是由Apache Hadoop的开源协议决定的：任何人可以对其进行修改，并作为开源或商业产品发布/销售。(http://www.apache.org/licenses/LICENSE-2.0)。CDH全称是C">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -150,36 +155,91 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-CDH，HDP，Apache Hadoop之间的关系" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" class="archive-article-date">
-  	<time datetime="2018-08-05T07:33:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/">CDH，HDP，Apache Hadoop之间的关系</a>
+    <h1 class="article-title" itemprop="name">
+      CDH，HDP，Apache Hadoop之间的关系
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" class="archive-article-date">
+  	<time datetime="2018-08-05T07:33:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、综述"><a href="#一、综述" class="headerlink" title="一、综述"></a>一、综述</h2><p>目前Hadoop发行版非常多，有华为发行版、Intel发行版、Cloudera发行版（CDH）等，所有这些发行版均是基于Apache Hadoop衍生出来的，之所以有这么多的版本，完全是由Apache Hadoop的开源协议决定的：任何人可以对其进行修改，并作为开源或商业产品发布/销售。(<a href="http://www.apache.org/licenses/LICENSE-2.0)。" target="_blank" rel="noopener">http://www.apache.org/licenses/LICENSE-2.0)。</a><br>CDH全称是Cloudera<br>国内绝大多数公司发行版是收费的，比如Intel发行版、华为发行版等，尽管这些发行版增加了很多开源版本没有的新feature，但绝大多数公司选择Hadoop版本时会将把是否收费作为重要指标，不收费的Hadoop版本主要有三个（均是国外厂商），分别是：</p>
+<ul>
+<li>Cloudera版本（Cloudera’s Distribution Including Apache Hadoop，简称“CDH”）</li>
+<li>Apache基金会hadoop</li>
+<li>Hortonworks版本（Hortonworks Data Platform，简称“HDP”）</li>
+</ul>
+<p>对于国内而言，绝大多数选择CDH版本。</p>
+<h2 id="二、社区版本与第三方发行版本的比较"><a href="#二、社区版本与第三方发行版本的比较" class="headerlink" title="二、社区版本与第三方发行版本的比较"></a>二、社区版本与第三方发行版本的比较</h2><h3 id="1-Apache社区版本"><a href="#1-Apache社区版本" class="headerlink" title="1.Apache社区版本"></a>1.Apache社区版本</h3><p>优点：<br>    完全开源免费。<br>    社区活跃<br>    文档、资料详实</p>
+<p>缺点：<br>—-复杂的版本管理。版本管理比较混乱的，各种版本层出不穷，让很多使用者不知所措。<br>—-复杂的集群部署、安装、配置。通常按照集群需要编写大量的配置文件，分发到每一台节点上，容易出错，效率低下。<br>—-复杂的集群运维。对集群的监控，运维，需要安装第三方的其他软件，如ganglia，nagois等，运维难度较大。<br>—-复杂的生态环境。在Hadoop生态圈中，组件的选择、使用，比如Hive，Mahout，Sqoop，Flume，Spark，Oozie等等，需要大量考虑兼容性的问题，版本是否兼容，组件是否有冲突，编译是否能通过等。经常会浪费大量的时间去编译组件，解决版本冲突问题。</p>
+<h3 id="2-第三方发行版本（如CDH，HDP，MapR等）"><a href="#2-第三方发行版本（如CDH，HDP，MapR等）" class="headerlink" title="2.第三方发行版本（如CDH，HDP，MapR等）"></a>2.第三方发行版本（如CDH，HDP，MapR等）</h3><p>优点：<br>—-基于Apache协议，100%开源。<br>—-版本管理清晰。比如Cloudera，CDH1，CDH2，CDH3，CDH4等，后面加上补丁版本，如CDH4.1.0 patch level 923.142，表示在原生态Apache Hadoop 0.20.2基础上添加了1065个patch。<br>—-比Apache Hadoop在兼容性、安全性、稳定性上有增强。第三方发行版通常都经过了大量的测试验证，有众多部署实例，大量的运行到各种生产环境。<br>—-版本更新快。通常情况，比如CDH每个季度会有一个update，每一年会有一个release。<br>—-基于稳定版本Apache Hadoop，并应用了最新Bug修复或Feature的patch<br>—-提供了部署、安装、配置工具，大大提高了集群部署的效率，可以在几个小时内部署好集群。<br>—-运维简单。提供了管理、监控、诊断、配置修改的工具，管理配置方便，定位问题快速、准确，使运维工作简单，有效。</p>
+<p>缺点：<br>—-涉及到厂商锁定的问题。（可以通过技术解决）</p>
+<h2 id="三、第三方发行版本的比较"><a href="#三、第三方发行版本的比较" class="headerlink" title="三、第三方发行版本的比较"></a>三、第三方发行版本的比较</h2><p>Cloudera：最成型的发行版本，拥有最多的部署案例。提供强大的部署、管理和监控工具。Cloudera开发并贡献了可实时处理大数据的Impala项目。<br>Hortonworks：不拥有任何私有（非开源）修改地使用了100%开源Apache Hadoop的唯一提供商。Hortonworks是第一家使用了Apache HCatalog的元数据服务特性的提供商。并且，它们的Stinger开创性地极大地优化了Hive项目。Hortonworks为入门提供了一个非常好的，易于使用的沙盒。Hortonworks开发了很多增强特性并提交至核心主干，这使得Apache Hadoop能够在包括Windows Server和Windows Azure在内的Microsft Windows平台上本地运行。</p>
+<h2 id="四、CDH，Apache-Hadoop，HDP的比较"><a href="#四、CDH，Apache-Hadoop，HDP的比较" class="headerlink" title="四、CDH，Apache Hadoop，HDP的比较"></a>四、CDH，Apache Hadoop，HDP的比较</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>Apache Hadoop</th>
+<th>CDH</th>
+<th>HDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管理工具</td>
+<td>手工</td>
+<td>Cloudera Manager</td>
+<td>Ambari</td>
+</tr>
+<tr>
+<td>收费情况</td>
+<td>开源</td>
+<td>社区版免费，企业版收费</td>
+<td>免费</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -191,57 +251,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/08/05/hello-world/" class="archive-article-date">
-  	<time datetime="2018-08-05T05:09:53.641Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/08/05/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/08/05/hello-world/">Hello World</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">welcome</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -264,8 +373,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

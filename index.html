@@ -152,6 +152,115 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CDH，HDP，Apache Hadoop之间的关系" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/">CDH，HDP，Apache Hadoop之间的关系</a>
+    </h1>
+  
+
+        
+        <a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" class="archive-article-date">
+  	<time datetime="2018-08-05T07:33:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一、综述"><a href="#一、综述" class="headerlink" title="一、综述"></a>一、综述</h2><p>目前Hadoop发行版非常多，有华为发行版、Intel发行版、Cloudera发行版（CDH）等，所有这些发行版均是基于Apache Hadoop衍生出来的，之所以有这么多的版本，完全是由Apache Hadoop的开源协议决定的：任何人可以对其进行修改，并作为开源或商业产品发布/销售。(<a href="http://www.apache.org/licenses/LICENSE-2.0)。" target="_blank" rel="noopener">http://www.apache.org/licenses/LICENSE-2.0)。</a><br>CDH全称是Cloudera<br>国内绝大多数公司发行版是收费的，比如Intel发行版、华为发行版等，尽管这些发行版增加了很多开源版本没有的新feature，但绝大多数公司选择Hadoop版本时会将把是否收费作为重要指标，不收费的Hadoop版本主要有三个（均是国外厂商），分别是：</p>
+<ul>
+<li>Cloudera版本（Cloudera’s Distribution Including Apache Hadoop，简称“CDH”）</li>
+<li>Apache基金会hadoop</li>
+<li>Hortonworks版本（Hortonworks Data Platform，简称“HDP”）</li>
+</ul>
+<p>对于国内而言，绝大多数选择CDH版本。</p>
+<h2 id="二、社区版本与第三方发行版本的比较"><a href="#二、社区版本与第三方发行版本的比较" class="headerlink" title="二、社区版本与第三方发行版本的比较"></a>二、社区版本与第三方发行版本的比较</h2><h3 id="1-Apache社区版本"><a href="#1-Apache社区版本" class="headerlink" title="1.Apache社区版本"></a>1.Apache社区版本</h3><p>优点：<br>    完全开源免费。<br>    社区活跃<br>    文档、资料详实</p>
+<p>缺点：<br>—-复杂的版本管理。版本管理比较混乱的，各种版本层出不穷，让很多使用者不知所措。<br>—-复杂的集群部署、安装、配置。通常按照集群需要编写大量的配置文件，分发到每一台节点上，容易出错，效率低下。<br>—-复杂的集群运维。对集群的监控，运维，需要安装第三方的其他软件，如ganglia，nagois等，运维难度较大。<br>—-复杂的生态环境。在Hadoop生态圈中，组件的选择、使用，比如Hive，Mahout，Sqoop，Flume，Spark，Oozie等等，需要大量考虑兼容性的问题，版本是否兼容，组件是否有冲突，编译是否能通过等。经常会浪费大量的时间去编译组件，解决版本冲突问题。</p>
+<h3 id="2-第三方发行版本（如CDH，HDP，MapR等）"><a href="#2-第三方发行版本（如CDH，HDP，MapR等）" class="headerlink" title="2.第三方发行版本（如CDH，HDP，MapR等）"></a>2.第三方发行版本（如CDH，HDP，MapR等）</h3><p>优点：<br>—-基于Apache协议，100%开源。<br>—-版本管理清晰。比如Cloudera，CDH1，CDH2，CDH3，CDH4等，后面加上补丁版本，如CDH4.1.0 patch level 923.142，表示在原生态Apache Hadoop 0.20.2基础上添加了1065个patch。<br>—-比Apache Hadoop在兼容性、安全性、稳定性上有增强。第三方发行版通常都经过了大量的测试验证，有众多部署实例，大量的运行到各种生产环境。<br>—-版本更新快。通常情况，比如CDH每个季度会有一个update，每一年会有一个release。<br>—-基于稳定版本Apache Hadoop，并应用了最新Bug修复或Feature的patch<br>—-提供了部署、安装、配置工具，大大提高了集群部署的效率，可以在几个小时内部署好集群。<br>—-运维简单。提供了管理、监控、诊断、配置修改的工具，管理配置方便，定位问题快速、准确，使运维工作简单，有效。</p>
+<p>缺点：<br>—-涉及到厂商锁定的问题。（可以通过技术解决）</p>
+<h2 id="三、第三方发行版本的比较"><a href="#三、第三方发行版本的比较" class="headerlink" title="三、第三方发行版本的比较"></a>三、第三方发行版本的比较</h2><p>Cloudera：最成型的发行版本，拥有最多的部署案例。提供强大的部署、管理和监控工具。Cloudera开发并贡献了可实时处理大数据的Impala项目。<br>Hortonworks：不拥有任何私有（非开源）修改地使用了100%开源Apache Hadoop的唯一提供商。Hortonworks是第一家使用了Apache HCatalog的元数据服务特性的提供商。并且，它们的Stinger开创性地极大地优化了Hive项目。Hortonworks为入门提供了一个非常好的，易于使用的沙盒。Hortonworks开发了很多增强特性并提交至核心主干，这使得Apache Hadoop能够在包括Windows Server和Windows Azure在内的Microsft Windows平台上本地运行。</p>
+<h2 id="四、CDH，Apache-Hadoop，HDP的比较"><a href="#四、CDH，Apache-Hadoop，HDP的比较" class="headerlink" title="四、CDH，Apache Hadoop，HDP的比较"></a>四、CDH，Apache Hadoop，HDP的比较</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>Apache Hadoop</th>
+<th>CDH</th>
+<th>HDP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>管理工具</td>
+<td>手工</td>
+<td>Cloudera Manager</td>
+<td>Ambari</td>
+</tr>
+<tr>
+<td>收费情况</td>
+<td>开源</td>
+<td>社区版免费，企业版收费</td>
+<td>免费</td>
+</tr>
+</tbody>
+</table>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">大数据</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -189,6 +298,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">welcome</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -233,7 +353,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 John Doe
+    		&copy; 2021 John Doe
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -314,6 +434,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">welcome</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
