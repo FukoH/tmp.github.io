@@ -6,20 +6,29 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hello World | 一始之心</title>
+  <title>操作系统笔记 | 一始之心</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
-<meta name="keywords" content="杂记">
+  <meta name="description" content="综述1.知识体系操作系统就像一家外包公司： 为了实现系统的运作，其实是由几个子系统支撑完成的： 2. 系统调用2.1 立项与进程管理 父进程进行fork操作，得到子进程，先从父进程拷贝数据结构，再修该 子进程调用execve执行另一个程序-有个系统调用叫 waitpid，父进程能知道子进程是否运行完毕  2.2 会议室与内存管理 进程空间内，存放代码的部分叫做代码段（Code Segment）">
+<meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/08/05/hello-world/index.html">
+<meta property="og:title" content="操作系统笔记">
+<meta property="og:url" content="http://yoursite.com/2021/02/01/操作系统笔记/index.html">
 <meta property="og:site_name" content="一始之心">
-<meta property="og:description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
+<meta property="og:description" content="综述1.知识体系操作系统就像一家外包公司： 为了实现系统的运作，其实是由几个子系统支撑完成的： 2. 系统调用2.1 立项与进程管理 父进程进行fork操作，得到子进程，先从父进程拷贝数据结构，再修该 子进程调用execve执行另一个程序-有个系统调用叫 waitpid，父进程能知道子进程是否运行完毕  2.2 会议室与内存管理 进程空间内，存放代码的部分叫做代码段（Code Segment）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-02-01T05:06:45.005Z">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074202841-25958189.jpg">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074244800-1265785301.jpg">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820074710151-2140536658.jpg">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820080016396-1695385235.jpg">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200831073212769-997986416.jpg">
+<meta property="og:image" content="https://blog.csdn.net/u010899985/article/details/80981053">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200903112734399-114741590.jpg">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200907074857451-67320102.jpg">
+<meta property="og:updated_time" content="2021-02-01T12:20:46.798Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟">
+<meta name="twitter:title" content="操作系统笔记">
+<meta name="twitter:description" content="综述1.知识体系操作系统就像一家外包公司： 为了实现系统的运作，其实是由几个子系统支撑完成的： 2. 系统调用2.1 立项与进程管理 父进程进行fork操作，得到子进程，先从父进程拷贝数据结构，再修该 子进程调用execve执行另一个程序-有个系统调用叫 waitpid，父进程能知道子进程是否运行完毕  2.2 会议室与内存管理 进程空间内，存放代码的部分叫做代码段（Code Segment）">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074202841-25958189.jpg">
   
     <link rel="alternative" href="/atom.xml" title="一始之心" type="application/atom+xml">
   
@@ -149,27 +158,215 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-hello-world" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-操作系统笔记" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      操作系统笔记
     </h1>
   
 
         
-        <a href="/2018/08/05/hello-world/" class="archive-article-date">
-  	<time datetime="2018-08-05T05:09:53.642Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-05</time>
+        <a href="/2021/02/01/操作系统笔记/" class="archive-article-date">
+  	<time datetime="2021-02-01T11:55:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-01</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>博客搬家啦，慢慢把各个平台的博客汇聚起来，记录自己成长道路上的收获和感悟</p>
+        <h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><h2 id="1-知识体系"><a href="#1-知识体系" class="headerlink" title="1.知识体系"></a>1.知识体系</h2><p>操作系统就像一家外包公司：<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074202841-25958189.jpg" alt=""></p>
+<p>为了实现系统的运作，其实是由几个子系统支撑完成的：<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074244800-1265785301.jpg" alt=""></p>
+<h2 id="2-系统调用"><a href="#2-系统调用" class="headerlink" title="2. 系统调用"></a>2. 系统调用</h2><h3 id="2-1-立项与进程管理"><a href="#2-1-立项与进程管理" class="headerlink" title="2.1 立项与进程管理"></a>2.1 立项与进程管理</h3><ul>
+<li>父进程进行<strong>fork</strong>操作，得到子进程，先从父进程拷贝数据结构，再修该</li>
+<li>子进程调用<strong>execve</strong>执行另一个程序<br>-有个系统调用叫 <strong>waitpid</strong>，父进程能知道子进程是否运行完毕</li>
+</ul>
+<h3 id="2-2-会议室与内存管理"><a href="#2-2-会议室与内存管理" class="headerlink" title="2.2 会议室与内存管理"></a>2.2 会议室与内存管理</h3><ul>
+<li>进程空间内，存放代码的部分叫做<strong>代码段（Code Segment）</strong></li>
+<li>进程内，存放数据的部分叫做<strong>数据段（Data Segment</strong><pre><code>- 局部变量在当前函数有效，离开函数则释放
+- 动态分类的，指明才销毁的，称为堆
+</code></pre></li>
+<li>进程不用的部分就不管，进程需要使用内存的时候，会调用内存管理系统，但是也不代表对应到了真正的物理内存，只有要写入且发现没有物理内存，才会触发一个中断，现分配物理内存</li>
+<li>两个系统调用<pre><code>- **brk**：内存数据量小时，和原来的数据连在一起
+- **mmap**： 数据量大时重新划分一个区域
+</code></pre></li>
+</ul>
+<h3 id="档案库管理与文件管理"><a href="#档案库管理与文件管理" class="headerlink" title="档案库管理与文件管理"></a>档案库管理与文件管理</h3><p>最重要的6个文件操作：</p>
+<ul>
+<li>对已有文件的<strong>打开</strong>和<strong>关闭</strong></li>
+<li><strong>创建</strong></li>
+<li>打开文件以后使用<strong>lseek</strong>跳到文件某个位置</li>
+<li><strong>read</strong>和<strong>write</strong></li>
+</ul>
+<p>每个文件，Linux都会分配一个文件描述符(File Descriptor），这是一个整数。有了这个文件描述符，我们就可以使用系统调用，查看或者干预进程运行的方方面面。<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820074710151-2140536658.jpg" alt=""></p>
+<h3 id="2-3-项目异常与信号处理"><a href="#2-3-项目异常与信号处理" class="headerlink" title="2.3 项目异常与信号处理"></a>2.3 项目异常与信号处理</h3><p>每种信号都定义了默认动作，也可提供处理函数，可以通过<strong>sigaction</strong>系统调用，注册一个信号处理函数。提供了信号处理服务，进程执行中一旦有变动，就可以及时处理了。</p>
+<h3 id="项目组间沟通与进程间通信"><a href="#项目组间沟通与进程间通信" class="headerlink" title="项目组间沟通与进程间通信"></a>项目组间沟通与进程间通信</h3><ul>
+<li>消息队列<pre><code>- msgsnd发送消息到消息队列
+- msgget创建一个消息队列
+- msgrcv从队列获取消息
+</code></pre></li>
+<li>共享内存<pre><code>- shmget创建共享内存块
+- shmat将共享内存映射到自己的内存空间
+</code></pre></li>
+<li>如何解决同时访问数据的问——举例：Semaphore信号量</li>
+</ul>
+<h3 id="2-4公司间沟通与网络通信"><a href="#2-4公司间沟通与网络通信" class="headerlink" title="2.4公司间沟通与网络通信"></a>2.4公司间沟通与网络通信</h3><p>网络服务通过套接字Socket完成</p>
+<h3 id="2-5-中介与Glibc"><a href="#2-5-中介与Glibc" class="headerlink" title="2.5 中介与Glibc"></a>2.5 中介与Glibc</h3><p>系统调用不是直接使用的，而是使用Glibc。它是Linux下使用的标准C库，为程序员提供丰富的API，封装了操作系统的系统服务。</p>
+<h3 id="2-6-小结"><a href="#2-6-小结" class="headerlink" title="2.6 小结"></a>2.6 小结</h3><p><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820080016396-1695385235.jpg" alt=""></p>
+<h2 id="3-x86架构"><a href="#3-x86架构" class="headerlink" title="3.x86架构"></a>3.x86架构</h2><ul>
+<li>CPU 包括: 运算单元, 数据单元, 控制单元<ul>
+<li>运算单元 不知道算哪些数据, 结果放哪</li>
+<li>数据单元 包括 CPU 内部缓存和寄存器, 暂时存放数据和结果</li>
+<li>控制单元 获取下一条指令, 指导运算单元取数据, 计算, 存放结果</li>
+</ul>
+</li>
+<li>进程包含代码段, 数据段等, 以下为 CPU 执行过程:<ul>
+<li>控制单元 通过指令指针寄存器(IP), 取下一条指令, 放入指令寄存器中<ul>
+<li>指令包括操作和目标数据</li>
+</ul>
+</li>
+<li>数据单元 根据控制单元的指令, 从数据段读数据到数据寄存器中</li>
+<li>运算单元 开始计算, 结果暂时存放到数据寄存器</li>
+</ul>
+</li>
+<li>两个寄存器, 存当前进程代码段和数据段起始地址, 在进程间切换</li>
+<li>总线包含两类数据: 地址总线和数据总线</li>
+</ul>
+<hr>
+<ul>
+<li>x86 开放, 统一, 兼容</li>
+<li>数据单元 包含 8个 16位通用寄存器, 可分为 2个 8位使用</li>
+<li>控制单元 包含 IP(指令指针寄存器) 以及 4个段寄存器 CS DS SS ES<ul>
+<li>IP 存放指令偏移量</li>
+<li>数据偏移量存放在通用寄存器中</li>
+<li><code>段地址&lt;&lt;4 + 偏移量</code> 得到地址</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>32 位处理器</li>
+<li>通用寄存器 从 8个 16位拓展为 8个 32位, 保留 16位和 8位使用方式</li>
+<li>IP 从 16位扩展为 32位, 保持兼容</li>
+<li>段寄存器仍为 16位, 由段描述符(表格, 缓存到 CPU 中)存储段的起始地址, 由段寄存器选择其中一项<ul>
+<li>保证段地址灵活性与兼容性</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>16位为实模式, 32位为保护模式</li>
+<li>刚开机为实模式, 需要更多内存切换到保护模式</li>
+</ul>
+<h2 id="4-从BIOS到BootLoader"><a href="#4-从BIOS到BootLoader" class="headerlink" title="4. 从BIOS到BootLoader"></a>4. 从BIOS到BootLoader</h2><h2 id="5-内核初始化"><a href="#5-内核初始化" class="headerlink" title="5. 内核初始化"></a>5. 内核初始化</h2><h3 id="5-1-初始化步骤"><a href="#5-1-初始化步骤" class="headerlink" title="5.1 初始化步骤"></a>5.1 初始化步骤</h3><ul>
+<li>进程初始化：系统启动首先启动0号进程，</li>
+<li>初始化中断门</li>
+<li>初始化内存管理</li>
+<li>创建1号进程</li>
+</ul>
+<h3 id="5-2-从用户态到内核态"><a href="#5-2-从用户态到内核态" class="headerlink" title="5.2 从用户态到内核态"></a>5.2 从用户态到内核态</h3><p>用户态-系统调用-保存寄存器-内核态执行系统调用-恢复寄存器-返回用户态</p>
+<p>##6 系统调用</p>
+<ul>
+<li>gclib对系统调用的封装</li>
+</ul>
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h2 id="7-进程"><a href="#7-进程" class="headerlink" title="7. 进程"></a>7. 进程</h2><p>###7.1 进程如何从代码到运行</p>
+<ul>
+<li>文件编译生成so文件和可执行文件</li>
+<li>用户态的进程A执行fork，创建进程B</li>
+<li>B会执行exec系列系统调用</li>
+<li>系统调用通过load_elf_binary方法，将可执行文件加载到B的内存中<h2 id="8-线程"><a href="#8-线程" class="headerlink" title="8.线程"></a>8.线程</h2><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200831073212769-997986416.jpg" alt=""><h2 id="9-进程的数据结构"><a href="#9-进程的数据结构" class="headerlink" title="9.进程的数据结构"></a>9.进程的数据结构</h2></li>
+</ul>
+<p>进程用task_struct表示<br>包含内容</p>
+<ul>
+<li>ID</li>
+<li>信号处理<br>pid 是 process id，tgid 是 thread group ID。<br>任何一个进程，如果只有主线程，那 pid 是自己，tgid 是自己，group_leader 指向的还是自己。<br>但是，如果一个进程创建了其他线程，那就会有所变化了。线程有自己的 pid，tgid 就是进程的主线程的 pid，group_leader 指向的就是进程的主线程。</li>
+<li>任务状态</li>
+<li>进程调度</li>
+<li>运行统计信息</li>
+<li>进程亲缘关系<br>是一个树形结构，保存了parent，children，sibling的指针</li>
+<li>进程权限<pre><code>- uid和gid时进程的真实id，意思是谁启动了进程
+- euid和egid，“起作用”的。当进程要操作消息队列，共享内存，信号量等对象时，比较这个id
+- fsuid和fsgid， filesystem，对文件操作会审核权限
+- 使用chmod u+x可以改变文件的set-useri-id标识位，这样文件的euid和fsuid都改成了当前用户
+</code></pre><ul>
+<li>新加入的capabilities机制用位图表示权限</li>
+</ul>
+</li>
+<li>内存管理</li>
+<li>文件与文件系统</li>
+<li>用户态函数栈<pre><code>- 高地址到低地址，往下增长，入栈出栈都从下面的栈顶开始
+</code></pre></li>
+<li>内核态函数栈<pre><code>- 通过一个pt_regs的struct保存寄存器状态
+- 可以通过task_struct找到内核栈和内核寄存器
+</code></pre></li>
+</ul>
+<h2 id="10-进程的调度"><a href="#10-进程的调度" class="headerlink" title="10. 进程的调度"></a>10. 进程的调度</h2><ul>
+<li>task_struct解决了能”<strong>看到</strong>“哪些问题，还需要解决如何”<strong>做到</strong>“<br>###10.1 调度策略与调度类</li>
+<li>实时进程</li>
+<li>普通进程</li>
+<li>调度策略<pre><code>#define SCHED_NORMAL    0
+#define SCHED_FIFO    1
+#define SCHED_RR    2
+#define SCHED_BATCH    3
+#define SCHED_IDLE    5
+#define SCHED_DEADLINE    6
+</code></pre></li>
+<li><p>调度优先级<br>  int prio, static_prio, normal_prio;<br>  unsigned int rt_priority;</p>
+</li>
+<li><p>实时调度策略</p>
+<pre><code>- FIFO 
+先来先服务
+- RR 
+时间片轮流服务
+- DEADLINE
+选择离当前deadline距离最近的任务
+</code></pre></li>
+<li>普通调度策略<pre><code>- NORMAL
+和名字一样普通
+- BATCH
+后台进程
+- IDLE
+空闲时进行的进程
+</code></pre></li>
+<li>调度策略的封装</li>
+<li>上述变量只是定义了名字，实际上的实现则是由task_struct把调度策略封装在了sched_class中</li>
+<li>完全公平调度算法<br>   CFS：completely fair scheduling<ul>
+<li>记录下进程运行时间，称为一个tick</li>
+<li>cfs会为进程安排一个虚拟运行时间vruntime</li>
+<li>随着进程运行，tick增加，vruntime也增加</li>
+<li>vruntime大则运行时间多，小则少，需要给小的进程分配更多的运行时间</li>
+<li>不同进程有权重，权重高的vruntime高</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-2-调度队列与调度实体"><a href="#10-2-调度队列与调度实体" class="headerlink" title="10.2 调度队列与调度实体"></a>10.2 调度队列与调度实体</h3><ul>
+<li>cfs需要一个数据结构对vruntime进行排序——红黑树<pre><code>- 红黑树：一种自平衡查找树
+</code></pre>Linux的的进程调度完全公平调度程序，用红黑树管理进程控制块，进程的虚拟内存区域都存储在一颗红黑树上，每个虚拟地址区域都对应红黑树的一个节点，左指针指向相邻的地址虚拟存储区域，右指针指向相邻的高地址虚拟地址空间<br><img src="https://blog.csdn.net/u010899985/article/details/80981053" alt="题外话：红黑树的应用"></li>
+<li>cpu运行时的数据结构<br><img src="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200903112734399-114741590.jpg" alt=""><br>可以看到，一个 CPU 上有一个队列，CFS 的队列是一棵红黑树，树的每一个节点都是一个 sched_entity，每个 sched_entity 都属于一个 task_struct，task_struct 里面有指针指向这个进程属于哪个调度类。</li>
+</ul>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>内存管理要做到三件事：</p>
+<ul>
+<li><ol>
+<li>虚拟内存空间的管理，每个进程看到的地址空间是独立的，互不干扰的</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>物理内存的管理，只有内存管理模块能够使用</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>内存映射，需要将虚拟内存和物理内存管理起来<h3 id="虚拟内存的布局"><a href="#虚拟内存的布局" class="headerlink" title="虚拟内存的布局"></a>虚拟内存的布局</h3><img src="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200907074857451-67320102.jpg" alt=""></li>
+</ol>
+</li>
+<li>我们从最低位开始排起，先是 Text Segment、Data Segment 和 BSS Segment。Text Segment 是存放二进制可执行代码的位置，Data Segment 存放静态常量，BSS Segment 存放未初始化的静态变量。是不是觉得这几个名字很熟悉？没错，咱们前面讲 ELF 格式的时候提到过，在二进制执行文件里面，就有这三个部分。这里就是把二进制执行文件的三个部分加载到内存里面。</li>
+<li>接下来是堆（Heap）段。堆是往高地址增长的，是用来动态分配内存的区域，malloc 就是在这里面分配的。<br>接下来的区域是 Memory Mapping Segment。这块地址可以用来把文件映射进内存用的，如果二进制的执行文件依赖于某个动态链接库，就是在这个区域里面将 so 文件映射到了内存中。</li>
+<li>再下面就是栈（Stack）地址段。主线程的函数调用的函数栈就是用这里的。</li>
+<li>如果普通进程还想进一步访问内核空间，是没办法的，只能眼巴巴地看着。如果需要进行更高权限的工作，就需要调用系统调用，进入内核。<br>一旦进入了内核，就换了一种视角。刚才是普通进程的视角，觉着整个空间是它独占的，没有其他进程存在。当然另一个进程也这样认为，因为它们互相看不到对方。这也就是说，不同进程的 0 号到 29 号会议室放的东西都不一样。</li>
+<li>但是到了内核里面，无论是从哪个进程进来的，看到的都是同一个内核空间，看到的都是同一个进程列表。虽然内核栈是各用各的，但是如果想知道的话，还是能够知道每个进程的内核栈在哪里的。所以，如果要访问一些公共的数据结构，需要进行锁保护。也就是说，不同的进程进入到内核后，进入的 30 号到 39 号会议室是同一批会议室。</li>
+</ul>
 
       
 
@@ -204,7 +401,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">杂记</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
         		</li>
       		
 		</ul>
@@ -260,7 +457,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/08/05/hello-world/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/02/01/操作系统笔记/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -274,15 +471,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          CDH，HDP，Apache Hadoop之间的关系
-        
-      </div>
-    </a>
   
+    <a href="/2021/02/01/TCP-IP笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TCP/IP笔记</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 

