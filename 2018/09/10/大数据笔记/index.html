@@ -6,26 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>大数据笔记 | 一始之心</title>
+  <title>大数据笔记 | 遥远星辰</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
 <meta name="keywords" content="大数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="大数据笔记">
 <meta property="og:url" content="http://yoursite.com/2018/09/10/大数据笔记/index.html">
-<meta property="og:site_name" content="一始之心">
+<meta property="og:site_name" content="遥远星辰">
 <meta property="og:description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png">
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202101/1366679-20210129104002229-1364012538.png">
 <meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201019074457782-1250468697.png">
-<meta property="og:updated_time" content="2021-02-01T12:20:46.777Z">
+<meta property="og:updated_time" content="2021-02-02T09:28:17.137Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大数据笔记">
 <meta name="twitter:description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
 <meta name="twitter:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png">
   
-    <link rel="alternative" href="/atom.xml" title="一始之心" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="遥远星辰" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -55,10 +55,10 @@
 			<img src="" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">Shengxin Huang</a></h1>
+		  <h1 class="header-author"><a href="/">远辰</a></h1>
 		</hgroup>
 		
-		<p class="header-subtitle">keep trying</p>
+		<p class="header-subtitle">平淡岁月里精彩耀眼的星辰，就是自己</p>
 		
 
 		<nav class="header-menu">
@@ -109,10 +109,10 @@
 				<img src="" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">Shengxin Huang</h1>
+			  <h1 class="header-author js-header-author">远辰</h1>
 			</hgroup>
 			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>keep trying<i class="icon icon-quo-right"></i></p>
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>平淡岁月里精彩耀眼的星辰，就是自己<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -422,7 +422,10 @@ hdfs dfs get/put/getmerge/copy
 </li>
 </ul>
 </li>
-<li>Hive是如何序列化反序列化的？<br>序列化是对象转换为字节序列的过程。 反序列化是字节序列恢复为对象的过程。 对象的序列化主要有两种用途：对象的持久化，即把对象转换成字节序列后保存到文件中；对象数据的网络传送。 除了上面两点， hive的序列化的作用还包括：Hive的反序列化是对key/value反序列化成hive table的每个列的值。Hive可以方便的将数据加载到表中而不需要对数据进行转换，这样在处理海量数据时可以节省大量的时间。</li>
+<li><p>Hive是如何序列化反序列化的？<br>序列化是对象转换为字节序列的过程。 反序列化是字节序列恢复为对象的过程。 对象的序列化主要有两种用途：对象的持久化，即把对象转换成字节序列后保存到文件中；对象数据的网络传送。 除了上面两点， hive的序列化的作用还包括：Hive的反序列化是对key/value反序列化成hive table的每个列的值。Hive可以方便的将数据加载到表中而不需要对数据进行转换，这样在处理海量数据时可以节省大量的时间。</p>
+</li>
+<li><p>装载数据<br>LOAD DATA INPATH ‘/local/path/employees-data’ INTO TABLE employees;</p>
+</li>
 </ul>
 <h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><h3 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h3><ul>
 <li>Resilient — able to withstand failures<pre><code>- Distributed — spanning across multiple machines
@@ -619,7 +622,7 @@ hdfs dfs get/put/getmerge/copy
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Shengxin Huang
+    		&copy; 2021 远辰
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -702,11 +705,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">多线程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -715,14 +726,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">杂记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">多线程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">操作系统</a>
               </li>
              
               <li class="article-tag-list-item">
