@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MIT6.828 学习笔记 | 遥远星辰</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="##Chapter 2 操作系统组织  操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源">
+  <meta name="description" content="Chapter 2 操作系统组织 操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源抽象">
 <meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MIT6.828 学习笔记">
 <meta property="og:url" content="http://yoursite.com/2020/08/13/MIT6.828 学习笔记/index.html">
 <meta property="og:site_name" content="遥远星辰">
-<meta property="og:description" content="##Chapter 2 操作系统组织  操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源">
+<meta property="og:description" content="Chapter 2 操作系统组织 操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源抽象">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-05-11T01:06:51.262Z">
+<meta property="og:updated_time" content="2021-05-13T03:19:30.400Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MIT6.828 学习笔记">
-<meta name="twitter:description" content="##Chapter 2 操作系统组织  操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源">
+<meta name="twitter:description" content="Chapter 2 操作系统组织 操作系统的核心需求是同时支持多个活动  在进程间共享资源 保证不同的进程资源隔离 不同进程能够通信   为了满足上述三个需求，可以有许多方法。本课程主要关注单一核（monolithic kernal）的操作系统  本章也将讨论xv6启动时的第一个进程干了些什么  xv6 运行在多核（multi-core）的 RISC-V指令集的处理器上   2.1 物理资源抽象">
   
     <link rel="alternative" href="/atom.xml" title="遥远星辰" type="application/atom+xml">
   
@@ -169,8 +169,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>##Chapter 2 操作系统组织</p>
-<ul>
+        <h2 id="Chapter-2-操作系统组织"><a href="#Chapter-2-操作系统组织" class="headerlink" title="Chapter 2 操作系统组织"></a>Chapter 2 操作系统组织</h2><ul>
 <li><p>操作系统的核心需求是同时支持多个活动</p>
 <ul>
 <li>在进程间共享资源</li>
@@ -279,6 +278,21 @@
 <li>copyinstr把max字节的数据从页表的虚拟地址srcva拷贝到dst地址</li>
 <li>copyout把内核地址上的数据拷贝到用户地址上</li>
 </ul>
+<h2 id="Chapter-3-页表"><a href="#Chapter-3-页表" class="headerlink" title="Chapter 3 页表"></a>Chapter 3 页表</h2><ul>
+<li>操作系统提供页表的机制，让每个进程拥有自己独立的地址空间，并且复用同一块物理内存</li>
+<li>页表提供了一种让xv6施展一些小trick的机制（蹦床页表，trampoline page），在很多地址空间内，用一个未映射的页保护内核和用户栈</li>
+<li>本章将解释RISC-V提供的页表以及xv6是如何使用它们的</li>
+</ul>
+<h3 id="3-1-分页的硬件"><a href="#3-1-分页的硬件" class="headerlink" title="3.1 分页的硬件"></a>3.1 分页的硬件</h3><ul>
+<li>RISC-V的页表硬件把虚拟地址映射到物理地址</li>
+<li>Sv39 RISC-V<ul>
+<li>xv6运行在Sv39RISC-V上，意味着只有低位的39bit虚拟地址被使用了（虚拟地址有64bit），上部的25bit没有使用</li>
+<li>按照Sv39的配置，RISC-V的页表在逻辑上由$2^27$个页表键值对（page table entries,PTEs)的数组组成，每一个PTE有一个44bit的物理页面号(Pyisical page number,PPN)和一些标志位（flags)</li>
+<li>虚拟地址中，被使用的39bit中的上部的27bit是一个页表的索引，指向PTE。下12bit是offset</li>
+<li>页表以4096byte（$2^12$）的粒度控制物理地址，这样一个块被称为一个页面（page）</li>
+</ul>
+</li>
+</ul>
 
       
 
@@ -383,11 +397,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/02/01/TCP-IP笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/08/13/MIT6-828笔记/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          TCP/IP笔记
+          MIT6.828 学习笔记
         
       </div>
     </a>
@@ -516,6 +530,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Ansible</a>
               </li>
              
@@ -532,15 +550,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">大数据</a>
+                <a href="javascript:void(0)" class="js-tag color3">杂记</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">网络</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">杂记</a>
               </li>
              
               <li class="article-tag-list-item">
