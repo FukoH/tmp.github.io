@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>大数据笔记 | Shengxin Huang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
+<meta name="keywords" content="大数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大数据笔记">
+<meta property="og:url" content="http://yoursite.com/2018/09/10/大数据笔记/index.html">
+<meta property="og:site_name" content="Shengxin Huang">
+<meta property="og:description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202101/1366679-20210129104002229-1364012538.png">
+<meta property="og:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201019074457782-1250468697.png">
+<meta property="og:updated_time" content="2021-02-02T09:28:17.137Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="大数据笔记">
+<meta name="twitter:description" content="#Week1 引言 什么是scaling up ，什么是Scaling out？scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点 hdfs中的节点都有什么角色？- NameNode - DataNode  hdfs上的数据存放是怎么存的？同一机器上的数据，距离为0同一机架上的数据，距离为2同一机房的其他机架数据，距离为4其他机房，距">
+<meta name="twitter:image" content="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Shengxin Huang" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Shengxin Huang</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Welcome to my site</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-大数据笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/09/10/大数据笔记/" class="article-date">
+  <time datetime="2018-09-10T11:10:44.000Z" itemprop="datePublished">2018-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      大数据笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#Week1</p>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li>什么是scaling up ，什么是Scaling out？<br>scaling up又称为纵向扩展，是扩大机器的容量，scaling out又称为水平扩展，是把数据存储到多个节点</li>
+<li>hdfs中的节点都有什么角色？<pre><code>- NameNode
+- DataNode
+</code></pre></li>
+<li>hdfs上的数据存放是怎么存的？<br>同一机器上的数据，距离为0<br>同一机架上的数据，距离为2<br>同一机房的其他机架数据，距离为4<br>其他机房，距离为6</li>
+<li>chunk/block size是什么？</li>
+<li><p>hdfs的客户端是怎么读写数据的？<br>客户端先访问namenode，获取数据存在哪个datanode上，再从datanode读写</p>
+</li>
+<li><p>GFS文件系统的三大主要内容</p>
+<pre><code>- components failures are a norm (→ replication)
+- even space utilisation
+- write-once-read-many
+</code></pre></li>
+</ul>
+<h2 id="Block-Replica-State-Recovery-Process"><a href="#Block-Replica-State-Recovery-Process" class="headerlink" title="Block,Replica State,Recovery Process"></a>Block,Replica State,Recovery Process</h2><ul>
+<li>什么是Replica<br>Replica是DataNode中存储数据的单位，在DataNode上有很多Replica<br>-Replica的常见状态<pre><code>- Finalized ，处于finalized状态的replica已经完成了其所有字节的写，replica的内容和长度都已固定，除非此replica响应append事件来reopen继续追加写，否则此replica不会被写入新的字节。并且，这种类型的replica其真实的replica data和meta data是相匹配的。此replica的存储在其余DN的备份也有着相同的block id和字节。但是有一点需要注意，这种replica的时间戳GS(generation stamp)不是一成不变的，当进行错误块恢复的时候，有可能会发生变化(变为块恢复时的时间)。
+- RBW ，RWB是Replica Being Written to的缩写，一旦一个replica被创建或者之前的replica被追加数据，那么此replica就会变为RWB状态，这意味着这个replica正在被写入数据(是现在进行时哦，亲！)。这个块通常是一个正在被操作的文件(文件流未被关闭)的最后一个块。正因为处在“被写入数据”的状态，所以此replica的长度还未 确定，并且存储在磁盘上的此块的replica data和meta data也不一定是匹配的。此块的存储在其余DN上的replica可能有着不同的字节内容和长度。但是，此块的数据还是能够被reader看到的(读到的不一定是所有的数据)。为了防止意外，处于RWB状态的replica也要尽可能的持久化。
+- RWR是Replica Waiting to be Recovered的缩写，当DN死掉或者重启的时候，所有上述属于RBW状态的replica都会变成RWR状态。RWR状态的replica不会出现在传输数据的pipeline(通道，读和写等操作中，用此来进行传输block)中，因此也不会接收任何新的字节写入。这些状态的replica最终要么变为过期的数据，要么当客户端挂掉的时候参与到租约恢复中去
+- 当一个租约(客户端向NN申请的对一个文件的控制)过期并且发起包括此replica的块恢复机制之后，这个replica就会变为RUR状态，RUR就是Replica Under Recovery的缩写。
+- 顾名思义，这个Temporary的replica就是处于under construction的块，它是当块复制或者集群做均衡操作时创建的临时块。这种状态的块和RBW状态的块有很多类似的地方，但是有一点显著的不同，就是其数据是不能被reader看到的。当块创建失败或者DN重启的时候，此状态的replica都会被删除掉。
+</code></pre>-在DN端的硬盘存储的层次上，有三个子目录：current、tmp、rbw。current用来存储处于finalized状态的replica，tmp用来存储temporary状态的replica，rbw用来存储rbw、rur、rwr状态的replica。并且：</li>
+</ul>
+<p>(1)当块被客户端请求首次创建的时候，会被放入rbw目录下;</p>
+<p>(2)当块是因为复制或者均衡操作被创建的时候，会被放入tmp目录;</p>
+<p>(3)一旦一个块被finalized，就被移动到current目录;</p>
+<p>(4)当数据节点重启时，tmp目录下的replica就被清空，rbw目录下的replica就转变为rwr状态，current目录下的replica变为finalized状态;</p>
+<p>(5)当DN升级的时候，current和rbw目录下的块都会被保存在快照中。</p>
+<p>!()[<a href="https://images0.cnblogs.com/blog/392365/201305/30200928-0ede4fa514444ef6bcfd5ff4e4870cdb.jpg]" target="_blank" rel="noopener">https://images0.cnblogs.com/blog/392365/201305/30200928-0ede4fa514444ef6bcfd5ff4e4870cdb.jpg]</a></p>
+<ul>
+<li><p>什么是Block<br>Block是NameNode中的单位，存储着管理DataNode的信息（位置，状态等）</p>
+</li>
+<li><p>Block的状态保存在内存中</p>
+</li>
+<li><p>UnderConstruction状态<br>一旦一个块被创建或者被追加数据，就会处于underConstruction状态，此时，数据库正在被写入新的数据。这样的块是当前正处于被写状态的文件的的最后一个块。它的块长度和GS都还没有最终确定，同DN端的rwb状态一样，此数据块对reader来说是可见的。并且，此类型的块还会保持对写入其本身的数据通道和对应的RWR状态的replica的追踪，以防Client挂掉。</p>
+</li>
+<li><p>UnderRecovery状态<br>  当一个文件的租约过期时，如果此文件的最后一个block处于underConstruction状态，此块就会当块恢复开始的时候变为underRecovery状态。</p>
+</li>
+<li>Committed状态<br>  一个处于committed状态的block，其内容和时间戳GS都已经确定，但是在DN中还没有一个replica和此committed的block有着相同的字节和GS。除非进行append追加操作，否则此committed状态的block的字节和GS都不会再发生变化。为了响应reader的请求，committed状态的block仍然会持有rbw状态的replica的地址和追踪已经变为finalized状态的replica的长度和GS。当客户端调用NN的close file或add new block时，操作流未关闭的文件的处于underConstruction状态的replica会被转变为committed状态。如果最后一个block处于committed状态，那么此block对应的文件是无法被关闭的，客户端必须要重试。AddBlock和close将会扩展到包含最后一个block的GS和长度。</li>
+<li>Complete状态<br>一个处于complete状态的block，其长度和GS都是确定的，并且NN能够找到DN端GS和长度都对应的处于finalized状态的replica。Complete状态的block值会保持finalized状态的replica的地址。只有当所有的块都变为complete状态了，对应的文件才能被关闭。<br>和DN端的replica的状态不同，NN端的block的状态不会被持久化到磁盘上，当NN重启的时候，未关闭的文件的最后一个block会变为underConstruction状态，其余的块都变为complete状态。</li>
+</ul>
+<p>!()[<a href="https://images0.cnblogs.com/blog/392365/201305/30200957-c1463d3c038746df8e3eb860389e05db.jpg]" target="_blank" rel="noopener">https://images0.cnblogs.com/blog/392365/201305/30200957-c1463d3c038746df8e3eb860389e05db.jpg]</a></p>
+<ul>
+<li>恢复过程<pre><code>- 租约恢复，客户端向hdfs写入时，hdfs维护一个租约，本质上是一把写锁，只允许一个客户端写入。并且会不时的确认租约的存活，客户端是否挂掉。写入完成后才释放锁，别的客户端才可以继续写。这意味着同一时间只有一个客户端可以写数据
+- Block恢复，Block恢复只会发生在租约恢复的期间。在pipeline把数据写入不同的DataNode时，最后一个正在被写入的Repilca的数据并不一定一致，为了保证一致性，如果此时文件的写操作被租约关闭以外的操作关闭，就需要进行Block恢复。
+- pipeline恢复，在pipeline之间的数据进行写操作时，可能出现错误，此时需要对pipline进行恢复
+</code></pre></li>
+</ul>
+<p>小结：</p>
+<ul>
+<li>画出replica和block的状态图</li>
+<li>解释write pipeline的各个阶段(请结合recovery process)</li>
+<li><p>recovery process都有哪些？它们的目的分别是什么？</p>
+</li>
+<li><p>HDFS 客户端<br>  <code>hdfs dfs  -ls -R -h path/to/target</code>   # 同ls命令，此处列出的大小是单个replica的，并没有翻倍<br>  <code>hdfs dfs du -h path /to/target</code> # 列出总大小，算上了重复的replica<br>   ·hdfs dfs df -h ` # 查看系统储存空间使用情况</p>
+<pre><code>hdfs dfs mkdir -p dir/to/make
+hdfs dfs rm -r 
+hdfs dfs touchz
+hdfs dfs get/put/getmerge/copy
+</code></pre><p>   hdfs dfs setrep  #设置replica factor<br>   hdfs fsck   /path/to/target   -files -blocks locations #(file system check)<br>   hdfs fsck -blockid xxx<br>   hffs dfs find </p>
+</li>
+</ul>
+<h2 id="WEBUI和RESTAPI"><a href="#WEBUI和RESTAPI" class="headerlink" title="WEBUI和RESTAPI"></a>WEBUI和RESTAPI</h2><ul>
+<li>NameNode50070端口</li>
+<li>在WEBUI上可以看到<pre><code>- 权限
+- blockID
+- gsstamp
+- bloopoolID   #其实就是启动了联邦模式的多名称空间的id
+</code></pre></li>
+<li>联邦模式<br>1、由于单组Namenode在大规模集群中存在较大的局限性，Hadoop开源社区提供了Federation的方案，由多组Namenode在一个集群中共同提供服务，每个Namenode拥有一部分Namespace，工作互相独立，互不影响。</li>
+</ul>
+<p>2、在Federation中，Datanode被用作通用的数据块存储设备，每个DataNode要向集群中所有的Namenode注册，且周期性的向所有Namenode发送心跳和块报告，并执行来自所有Namenode的命令。</p>
+<p>##NameNode的结构</p>
+<ul>
+<li>假设有10PB的数据要存<pre><code>- 每个硬盘是2T，每天有15个硬盘会挂掉
+- namenode储存的对象需要150B，并且储存在内存中
+- 那么需要的硬盘是 ： 10PB/2TB *3
+- 需要的内存：  10PB/128MB *150b  ≈  3.9GB
+</code></pre></li>
+<li>NamdeNode使用WAL（write ahead log）机制保障namenode的数据不丢失<pre><code>- edit log 被复制到不同的硬盘上，保障metainfo不丢失
+- fsimage保存内存状态的快照
+- 这个机制恢复namenode需要太多的时间，于是发明了Secondary NameNode，sencondary namenode会从namenode获取fsimage和editlog
+</code></pre></li>
+</ul>
+<p>小结：<br>-总结并解释NameNode的结构（editlog和fsimage;RAM）</p>
+<ul>
+<li>估计hdfs集群需要多少资源</li>
+<li>小文件问题是什么，它的瓶颈是什么？</li>
+</ul>
+<h2 id="HDFS的文件存储"><a href="#HDFS的文件存储" class="headerlink" title="HDFS的文件存储"></a>HDFS的文件存储</h2><p>不同格式的存储在以下方面有差异：</p>
+<ul>
+<li>空间效率 space efficiency</li>
+<li>编码解码速度  encoding &amp; decoding speed</li>
+<li>支持的数据类型 supported data types<br>› splittable/monolithic structure</li>
+<li>扩展性 extensibility # 有的格式不支持加列</li>
+</ul>
+<h3 id="文本类型"><a href="#文本类型" class="headerlink" title="文本类型"></a>文本类型</h3><ul>
+<li>常见，人可读，易于生成，易于解析</li>
+<li>占据的存储空间大</li>
+<li>CSV, TSV, JSON, XML 都是常见的文本类型</li>
+<li>扩展性不好</li>
+</ul>
+<h3 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h3><h3 id="二进制文件"><a href="#二进制文件" class="headerlink" title="二进制文件"></a>二进制文件</h3><h4 id="SequenceFile"><a href="#SequenceFile" class="headerlink" title="SequenceFile"></a>SequenceFile</h4><h5 id="行存格式"><a href="#行存格式" class="headerlink" title="行存格式"></a>行存格式</h5><ul>
+<li>HDFS上的第一个二进制格式</li>
+<li>储存着key-value的序列</li>
+<li>Java实现的序列化反序列化</li>
+<li>包含header，metadata，等</li>
+<li>有3种格式<pre><code>- 经过block压缩的格式有两种：经过record压缩和未经过record压缩
+- 未经过block压缩
+</code></pre></li>
+<li>特点<pre><code>- 空间效率适中
+- 速度快
+- 数据类型：Java编程中的数据类型
+- 能否拆分：可以
+- 扩展性：不可扩展
+</code></pre><h4 id="Avro"><a href="#Avro" class="headerlink" title="Avro"></a>Avro</h4></li>
+<li>是格式，也是库</li>
+<li>用定义好的schema储存对象<pre><code>- 制定field name，types，alias
+- 制定序列化/反序列化的代码
+- 可以更新schema
+</code></pre></li>
+<li><p>支持多语言</p>
+</li>
+<li><p>组成：包含header，bloak等，区别的SequenceFile的点在于它的schema是通过schema定义的，而SeqenceFile是用户代码</p>
+</li>
+<li>特性：<pre><code>- 空间效率适中到好
+- 速度快
+- 数据类型：类json
+- 能否拆分：可以
+- 扩展性：可扩展
+</code></pre></li>
+</ul>
+<h5 id="列存格式"><a href="#列存格式" class="headerlink" title="列存格式"></a>列存格式</h5><ul>
+<li><p>RCfile</p>
+<pre><code>- HDFS的第一个列存格式
+- 水平/垂直分区
+      - 把row分成row group
+- 三部分组成：16 Byte Sync，meatadata,column data 
+
+- 空间效率高
+- 速度中等到快，有更少的IO
+- 数据类型：byteString,与Hive结合使用，Hive进行序列化反序列化，所以格式本身不序列化
+- 能否拆分：可以
+- 扩展性：不可扩展
+</code></pre></li>
+<li>Parquet<pre><code>- 存在很有列优化
+</code></pre></li>
+</ul>
+<p>小结：</p>
+<ul>
+<li>SequenceFile适用于Java开发</li>
+<li>Avro可以在很多场合适用</li>
+<li>Rcfiles/ORC/Parquet适用于宽表，数据仓库</li>
+</ul>
+<h4 id="Compression"><a href="#Compression" class="headerlink" title="Compression"></a>Compression</h4><ul>
+<li>block级别的压缩<pre><code>- Rcfile，parquet，Sequencefile
+</code></pre></li>
+<li>文件级别的压缩<pre><code>- 能在文件内导航
+</code></pre></li>
+</ul>
+<p>各种类型的文件压缩的数据：</p>
+<ul>
+<li>Gzip<pre><code>- compression speed ~16-90 MiB/s
+- decompression speed ~250- 320 MiB/s
+- ratio ~2.77 .. 3.43
+</code></pre></li>
+<li>Bzip2<pre><code>- compression speed ~12-14MB/s
+- decompression speed ~38-42MiB/s
+- ratio ~4.02 .. 4.80
+</code></pre></li>
+<li>LZO<pre><code>- compression speed ~77-150 MiB/s
+- decompression speed ~290-314 MiB/s
+- ratio ~2.10 .. 2.48
+</code></pre></li>
+<li><p>Snappy</p>
+<pre><code>- compression speed ~200 MiB/s
+- decompression speed ~475 MiB/s
+- ratio ~2.05
+</code></pre></li>
+<li><p>Bzip2最慢，也最省空间；Snappy最快，不省空间</p>
+</li>
+</ul>
+<h5 id="什么时候使用压缩？"><a href="#什么时候使用压缩？" class="headerlink" title="什么时候使用压缩？"></a>什么时候使用压缩？</h5><ul>
+<li>压缩是需要CPU进行计算的，如果HDFS能处理100MB/s，CPU只能处理100MB/s，说明瓶颈在CPU；如果CPU能处理1000MB/s，那么瓶颈就在IO；此时选择压缩率为5的话，100MB/s * 5 = 500MB/s也未能完全利用CPU的计算能力</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>文件格式有哪些</li>
+<li>各有什么优缺点</li>
+<li>什么时候使用压缩？<br>Leslie Lamport 分布式系统图灵奖获得者</li>
+</ul>
+<p>时钟同步：<br>绝对同步<br>相对同步</p>
+<p>同步系统/异步系统<br>两类：<br>fail stop  perfect link synchronous</p>
+<p>fail recovery fair loss link asynchronous</p>
+<p>大数据系统属于第二类</p>
+<p>MapReduce</p>
+<p>Map：<br>对每一个元素执行相同操作<br>Reduce<br>对所有元素依次执行操作<br>Shuffle</p>
+<p>例子：<br>分布式的linux命令：<br>grep：map使用grep，没有reduce<br>head：都没有<br>wc：map使用wc，reduce使用sum</p>
+<h3 id="容错机制"><a href="#容错机制" class="headerlink" title="容错机制"></a>容错机制</h3><ul>
+<li>Mapper和Reducer挂了会发生什么？<br>Master会自动把任务分配到好的节点去。</li>
+<li>Hadoop v1和Tracker和Tracer是什么？Yarn中的ResourceManager和NodeManager呢？<pre><code>- 首先用户程序 (JobClient) 提交了一个 job，job 的信息会发送到 Job Tracker 中，Job Tracker 是 Map-reduce 框架的中心，他需要与集群中的机器定时通信 (heartbeat), 需要管理哪些程序应该跑在哪些机器上，需要管理所有 job 失败、重启等操作。
+- TaskTracker 是 Map-reduce 集群中每台机器都有的一个部分，他做的事情主要是监视自己所在机器的资源情况。
+- TaskTracker 同时监视当前机器的 tasks 运行状况。TaskTracker 需要把这些信息通过 heartbeat 发送给 JobTracker，JobTracker 会搜集这些信息以给新提交的 job 分配运行在哪些机器上.
+</code></pre></li>
+</ul>
+<hr>
+<p>NodeManager管理资源，包括磁盘，CPU等，提供容器<br>ResourceManger申请资源</p>
+<h3 id="MapReduce和分布式Shell"><a href="#MapReduce和分布式Shell" class="headerlink" title="MapReduce和分布式Shell"></a>MapReduce和分布式Shell</h3><p>Leslie Lamport 分布式系统图灵奖获得者</p>
+<p>MapReduce</p>
+<p>Map：<br>对每一个元素执行相同操作<br>Reduce<br>对所有元素依次执行操作<br>Shuffle</p>
+<p>例子：<br>分布式的linux命令：<br>grep：map使用grep，没有reduce<br>head：都没有<br>wc：map使用wc，reduce使用sum</p>
+<h3 id="Streaming"><a href="#Streaming" class="headerlink" title="Streaming"></a>Streaming</h3><p>HDFS支持自定义steaming的函数，例子：<br><img src="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201009074811688-163070961.png" alt=""></p>
+<p>Combiner：在map阶段提前进行一次聚合，减少IO<br>Patitioner：<br>决定哪些数据被分到哪些reducer，默认是hash，可以继承petitioner自己实现<br>Comparator：<br>自定义比较的函数<br>优化MR任务：speculative execution/back up tasks<br>通过compression优化</p>
+<p>##Hive</p>
+<ul>
+<li>Apache HTTP 服务器的日志都有哪些字段？<br>127.0.0.1 - - [01/Aug/1995:00:00:01 -0400] “GET /images/launch-logo.gif HTTP/1.0” 200 1839</li>
+</ul>
+<p>一个详细一些的字段说明如下：</p>
+<p>127.0.0.1<br>第一项 ，发起请求的客户端IP地址。</p>
+<p>-<br>第二项 ，空白，用占位符“-”替代，表示所请求的信息（来自远程机器的用户身份），不可用。</p>
+<p>-<br>第三项，空白，表示所请求的信息（来自本地登录的用户身份），不可用。</p>
+<p>[01/Aug/1995:00:00:01 -0400]<br>第四项，服务器端处理完请求的时间，具体细节如下:<br>[day/month/year:hour:minute:second timezone]</p>
+<p>day = 2 digits<br>month = 3 letters<br>year = 4 digits<br>hour = 2 digits<br>minute = 2 digits<br>second = 2 digits<br>zone = (+ | -) 4 digits<br>“GET /images/launch-logo.gif HTTP/1.0”<br>第五项，客户端请求字符串的第一行，包含3个部分。1）请求方式 (e.g., GET, POST,HEAD 等.), 2）资源，3）客户端协议版本，通常是HTTP，后面再加上版本号</p>
+<p>200<br>第六项，服务器发回给客户端的状态码，这个信息非常有用，它告诉我们这个请求成功得到response(以2开头的状态码)，重定向(以3开头的状态码)，客户端引起的错误(以4开头的状态码)，服务器引起的错误(以5开头的状态码)。更多的信息可以查看([RFC 2616]）.</p>
+<p>1839<br>第七项，这个数据表明了服务器返回的数据大小（不包括response headers），当然，如果没有返回任何内容，这个值会是”-” (也有时候会是0).</p>
+<ul>
+<li>使用HiveQL解决业务问题</li>
+</ul>
+<h3 id="DDL和DML"><a href="#DDL和DML" class="headerlink" title="DDL和DML"></a>DDL和DML</h3><p>DDL和大多数数据库相同，不同之处在于：<br>1.外部表和内部表<br>内部表和外部表的区别：<br>         1）概念本质上<br>         内部表数据自己的管理的在进行表删除时数据和元数据一并删除。<br>         外部表只是对HDFS的一个目录的数据进行关联，外部表在进行删除时只删除元数据， 原始数据是不会被删除的。<br>         2）应用场景上<br>         外部表一般用于存储原始数据、公共数据，内部表一般用于存储某一个模块的中间结果数据。<br>         3）存储目录上<br>         外部表：一般在进行建表时候需要手动指定表的数据目录为共享资源目录，用lication关键字指定。<br>         内部表：无严格的要求，一般使用的默认目录。<br>2.数据类型<br>Hive可以保存复合类型的数据，包括Array，Map，Structure等复合类型：<br>    CREATE EXTERNAL TABLE tab_dataset (<br>        first_column STRING,<br>        second_column STRING,<br>        value INT<br>    )<br>    ROW FORMAT DELIMITED<br>    FIELDS TERMINATED BY ‘\001’<br>    COLLECTION ITEMS TERMINATED BY ‘\002’<br>    MAP KEYS TERMINATED BY ‘\003’<br>    LINES TERMINATED BY ‘\n’<br>    STORED AS file_format<br>    LOCATION ‘/user/adral/course2/week1/tab_dataset/‘;</p>
+<pre><code>// file_format 的类型   见本文
+</code></pre><p><img src="https://img2020.cnblogs.com/blog/1366679/202101/1366679-20210129104002229-1364012538.png" alt=""></p>
+<ul>
+<li>如何配置Hive的元数据？<br>• - Hive Service的APi有哪些？<br>   （来自文档）<ul>
+<li>API categories<pre><code>- Operation based APIs
+- Query based APIs
+</code></pre></li>
+<li>Available APIs<ul>
+<li>HCatClient (Java)</li>
+<li>HCatalog Storage Handlers (Java)</li>
+<li>HCatalog CLI (Command Line)</li>
+<li>Metastore (Java)</li>
+<li>WebHCat (REST)</li>
+<li>Streaming Data Ingest (Java)</li>
+<li>Streaming Mutation (Java)</li>
+<li>hive-jdbc (JDBC)-<br>-使用”explain”获取Hive表相关的信息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Hive是如何序列化反序列化的？<br>序列化是对象转换为字节序列的过程。 反序列化是字节序列恢复为对象的过程。 对象的序列化主要有两种用途：对象的持久化，即把对象转换成字节序列后保存到文件中；对象数据的网络传送。 除了上面两点， hive的序列化的作用还包括：Hive的反序列化是对key/value反序列化成hive table的每个列的值。Hive可以方便的将数据加载到表中而不需要对数据进行转换，这样在处理海量数据时可以节省大量的时间。</p>
+</li>
+<li><p>装载数据<br>LOAD DATA INPATH ‘/local/path/employees-data’ INTO TABLE employees;</p>
+</li>
+</ul>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><h3 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h3><ul>
+<li>Resilient — able to withstand failures<pre><code>- Distributed — spanning across multiple machines
+- Formally, a read-only, partitioned collection of records
+</code></pre>To adhere to RDD interface, a dataset must implement:<pre><code>- partitions()  Array[Partition]   # 一般hdfs的一个block就刚好对应一个partition
+- iterator(p: Partition, parents: Array[Iterator])  Iterator
+- dependencies()  Array[Dependency]
+</code></pre></li>
+</ul>
+<p>transaction是lazy的，直到数据被请求才会实际进行处理<br>常用的transformation：<br>groupByKey</p>
+<p>reduceByKey<br>cogroup<br>join<br>leftOuterJoin<br>rightOuterJoin<br>fullOuterJoin</p>
+<p>宽依赖<br>窄依赖</p>
+<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><p>Actions-&gt;Jobs-&gt; stages-&gt; tasks</p>
+<p>Spark执行的SparkContext管理着actions jobs stages tasks关系<br><img src="https://img2020.cnblogs.com/blog/1366679/202010/1366679-20201019074457782-1250468697.png" alt=""></p>
+<ul>
+<li>Job stage is a pipelined computation spanning between materialization<pre><code>- boundaries
+      - Task is a job stage bound to particular partitions
+      - Materialization happens when reading, shuffling or passing data to an action
+- narrow dependencies allow pipelining
+- wide dependencies forbid it
+</code></pre></li>
+</ul>
+<h3 id="SparkContext的其他作用"><a href="#SparkContext的其他作用" class="headerlink" title="SparkContext的其他作用"></a>SparkContext的其他作用</h3><ul>
+<li>Tracks liveness of the executors<pre><code>- required to provide fault-tolerance
+</code></pre></li>
+<li>Schedules multiple concurrent jobs to control the resource allocation within the application</li>
+<li>Performs dynamic resource allocation to control the resource allocation between different applications</li>
+</ul>
+<h3 id="持久化的最佳实践"><a href="#持久化的最佳实践" class="headerlink" title="持久化的最佳实践"></a>持久化的最佳实践</h3><ul>
+<li>For interactive sessions<pre><code>- cache preprocessed data
+</code></pre></li>
+<li>For batch computations<pre><code>- cache dictionaries
+- cache other datasets that are accessed multiple times
+</code></pre></li>
+<li>For iterative computations<pre><code>- cache static data
+</code></pre></li>
+<li>And do benchmarks!</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/09/10/大数据笔记/" data-id="cl64cw1lg000kx8w2ymxeavwv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/大数据/">大数据</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/11/09/Ansible随笔/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ansible随笔
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/08/05/CDH，HDP，Apache Hadoop之间的关系/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CDH，HDP，Apache Hadoop之间的关系</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ansible/">Ansible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂记/">杂记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Ansible/" style="font-size: 10px;">Ansible</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a> <a href="/tags/大数据/" style="font-size: 15px;">大数据</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/01/操作系统笔记/">操作系统笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/01/TCP-IP笔记/">TCP/IP笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/MIT6-828笔记/">MIT6.828 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/MIT6.828 学习笔记/">MIT6.828 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/多线程笔记/">多线程笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Shengxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

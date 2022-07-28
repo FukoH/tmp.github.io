@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>多线程笔记 | Shengxin Huang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##一、 基础概念 什么是线程 什么是进程？什么是线程？进程是系统中正在运行的一个程序，程序一旦运行就是进程。  进程可以看成程序执行的一个实例。进程是系统资源分配的独立实体，每个进程都拥有独立的地址空间。一个进程无法访问另一个进程的变量和数据结构，如果想让一个进程访问另一个进程的资源，需要使用进程间通信，比如管道，文件，套接字等。 一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。线程与">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程笔记">
+<meta property="og:url" content="http://yoursite.com/2020/08/13/多线程笔记/index.html">
+<meta property="og:site_name" content="Shengxin Huang">
+<meta property="og:description" content="##一、 基础概念 什么是线程 什么是进程？什么是线程？进程是系统中正在运行的一个程序，程序一旦运行就是进程。  进程可以看成程序执行的一个实例。进程是系统资源分配的独立实体，每个进程都拥有独立的地址空间。一个进程无法访问另一个进程的变量和数据结构，如果想让一个进程访问另一个进程的资源，需要使用进程间通信，比如管道，文件，套接字等。 一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。线程与">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://note.youdao.com/yws/public/resource/68bba2bcc59acb94a07c2dcac2dd0c6c/xmlnote/9577358869A442A78007CDD2D1F66430/4621">
+<meta property="og:updated_time" content="2021-02-01T15:24:26.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程笔记">
+<meta name="twitter:description" content="##一、 基础概念 什么是线程 什么是进程？什么是线程？进程是系统中正在运行的一个程序，程序一旦运行就是进程。  进程可以看成程序执行的一个实例。进程是系统资源分配的独立实体，每个进程都拥有独立的地址空间。一个进程无法访问另一个进程的变量和数据结构，如果想让一个进程访问另一个进程的资源，需要使用进程间通信，比如管道，文件，套接字等。 一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。线程与">
+<meta name="twitter:image" content="https://note.youdao.com/yws/public/resource/68bba2bcc59acb94a07c2dcac2dd0c6c/xmlnote/9577358869A442A78007CDD2D1F66430/4621">
+  
+    <link rel="alternate" href="/atom.xml" title="Shengxin Huang" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Shengxin Huang</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Welcome to my site</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-多线程笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/13/多线程笔记/" class="article-date">
+  <time datetime="2020-08-13T15:20:21.000Z" itemprop="datePublished">2020-08-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##一、 基础概念</p>
+<h3 id="什么是线程"><a href="#什么是线程" class="headerlink" title="什么是线程"></a>什么是线程</h3><ul>
+<li>什么是进程？什么是线程？<br>进程是系统中正在运行的一个程序，程序一旦运行就是进程。</li>
+</ul>
+<p>进程可以看成程序执行的一个实例。进程是系统资源分配的独立实体，每个进程都拥有独立的地址空间。一个进程无法访问另一个进程的变量和数据结构，如果想让一个进程访问另一个进程的资源，需要使用进程间通信，比如管道，文件，套接字等。</p>
+<p>一个进程可以拥有多个线程，每个线程使用其所属进程的栈空间。线程与进程的一个主要区别是，统一进程内的一个主要区别是，同一进程内的多个线程会共享部分状态，多个线程可以读写同一块内存（一个进程无法直接访问另一进程的内存）。同时，每个线程还拥有自己的寄存器和栈，其他线程可以读写这些栈内存。</p>
+<p>线程是进程的一个实体，是进程的一条执行路径。</p>
+<p>线程是进程的一个特定执行路径。当一个线程修改了进程的资源，它的兄弟线程可以立即看到这种变化。</p>
+<ul>
+<li>进程和线程的区别体现在以下几个方面：<br>1.地址空间和其他资源（如打开文件）：进程间相互独立，同一进程的各线程间共享。某进程内的线程在其他进程内不可见。</li>
+</ul>
+<p>2.通信：进程间通信IPC（管道，信号量，共享内存，消息队列），线程间可以直接独写进程数据段（如全局变量）来进程通信——需要进程同步和互斥手段的辅助，以保证数据的一致性。</p>
+<p>3.调度和切换：线程上下文切换比进程上下文切换快得多。</p>
+<p>4.在多线程OS中，进程不是一个可执行的实体。</p>
+<ul>
+<li>进程和线程的选择取决以下几点：<br>1.需要频繁创建销毁的优先使用线程；因为对进程来说创建和销毁一个进程的代价是很大的。</li>
+</ul>
+<p>2.线程的切换速度快，所以在需要大量计算，切换频繁时使用线程，还有耗时的操作时用使用线程可提高应用程序的响应。</p>
+<p>3.因为对CPU系统的效率使用上线程更占优势，所以可能要发展到多机分布的用进程，多核分布用线程。</p>
+<p>4.并行操作时用线程，如C/S架构的服务器端并发线程响应用户的请求。</p>
+<p>5.需要更稳定安全时，适合选择进程；需要速度时，选择线程更好。</p>
+<h3 id="线程的实现"><a href="#线程的实现" class="headerlink" title="线程的实现"></a>线程的实现</h3><p>继承Thread类或者实现Runnable接口</p>
+<pre><code>package com.mashibing.juc.c_000;
+
+public class T02_HowToCreateThread {
+    static class MyThread extends Thread {
+        @Override
+        public void run() {
+            System.out.println(&quot;Hello MyThread!&quot;);
+        }
+    }
+
+    static class MyRun implements Runnable {
+        @Override
+        public void run() {
+            System.out.println(&quot;Hello MyRun!&quot;);
+        }
+    }
+
+    public static void main(String[] args) {
+        new MyThread().start();
+        new Thread(new MyRun()).start();
+        new Thread(()-&gt;{
+            System.out.println(&quot;Hello Lambda!&quot;);
+        }).start();
+    }
+
+}
+
+//请你告诉我启动线程的三种方式 1：Thread 2: Runnable 3:Executors.newCachedThrad
+</code></pre><ul>
+<li>yield<br>Thread.yield()方法作用是：暂停当前正在执行的线程对象（及放弃当前拥有的cup资源），并执行其他线程。</li>
+</ul>
+<p>yield()做的是让当前运行线程回到可运行状态，以允许具有相同优先级的其他线程获得运行机会。因此，使用yield()的<br>目的是让相同优先级的线程之间能适当的轮转执行。但是，实际中无法保证yield()达到让步目的，因为让步的线程还有可能被<br>线程调度程序再次选中。</p>
+<p>结论：yield()从未导致线程转到等待/睡眠/阻塞状态。在大多数情况下，yield()将导致线程从运行状态转到可运行状态，但有可能没有效果</p>
+<ul>
+<li>join<br>大白话：就是谁调用这个方法，就让调用此方法的线程进入阻塞状态，等待我执行完毕之后，再往下执行；</li>
+</ul>
+<p>那么我们再来看上面那段加了join()的代码，首先开启线程A，紧接着线程A调用了join()方法进入阻塞状态，那么线程必须等待线程A执行结束之后再往下执行，线程A执行完毕，线程B开启，进入睡眠，主线程执行，线程B睡眠结束，执行；<br><a href="https://zhuanlan.zhihu.com/p/99374488" target="_blank" rel="noopener">知乎-关于join的解释</a></p>
+<h3 id="线程状态"><a href="#线程状态" class="headerlink" title="线程状态"></a>线程状态</h3><p><img src="https://note.youdao.com/yws/public/resource/68bba2bcc59acb94a07c2dcac2dd0c6c/xmlnote/9577358869A442A78007CDD2D1F66430/4621" alt="线程生命周期"></p>
+<ul>
+<li>新建状态:<br>使用 new 关键字和 Thread 类或其子类建立一个线程对象后，该线程对象就处于新建状态。它保持这个状态直到程序 start() 这个线程。</li>
+<li>就绪状态:<br>当线程对象调用了start()方法之后，该线程就进入就绪状态。就绪状态的线程处于就绪队列中，要等待JVM里线程调度器的调度。</li>
+<li>运行状态:<br>如果就绪状态的线程获取 CPU 资源，就可以执行 run()，此时线程便处于运行状态。处于运行状态的线程最为复杂，它可以变为阻塞状态、就绪状态和死亡状态。</li>
+<li>阻塞状态:<br>如果一个线程执行了sleep（睡眠）、suspend（挂起）等方法，失去所占用资源之后，该线程就从运行状态进入阻塞状态。在睡眠时间已到或获得设备资源后可以重新进入- - 就绪状态。可以分为三种：<ul>
+<li>等待阻塞：运行状态中的线程执行 wait() 方法，使线程进入到等待阻塞状态。</li>
+<li>同步阻塞：线程在获取 synchronized同步锁失败(因为同步锁被其他线程占用)。</li>
+<li>其他阻塞：通过调用线程的 sleep() 或 join() 发出了 I/O请求时，线程就会进入到阻塞状态。当sleep() 状态超时，join() 等待线程终止或超时，或者 I/O 处理完毕，线程重新转入就绪状态。</li>
+</ul>
+</li>
+<li>死亡状态:<br>一个运行状态的线程完成任务或者其他终止条件发生时，该线程就切换到终止状态。<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3></li>
+<li>synchronized 代码块</li>
+<li>synchronized方法</li>
+<li>从JDK1.5开始的Lock接口替代synchronized关键字</li>
+</ul>
+<h3 id="sychronized-锁升级"><a href="#sychronized-锁升级" class="headerlink" title="sychronized 锁升级"></a>sychronized 锁升级</h3><p><a href="https://blog.csdn.net/tongdanping/article/details/79647337" target="_blank" rel="noopener">https://blog.csdn.net/tongdanping/article/details/79647337</a></p>
+<h3 id="sychronized-同步方法与非同步方法"><a href="#sychronized-同步方法与非同步方法" class="headerlink" title="sychronized 同步方法与非同步方法"></a>sychronized 同步方法与非同步方法</h3><h3 id="sychronized-锁重入"><a href="#sychronized-锁重入" class="headerlink" title="sychronized 锁重入"></a>sychronized 锁重入</h3><h3 id="异常与锁"><a href="#异常与锁" class="headerlink" title="异常与锁"></a>异常与锁</h3><h3 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h3><h3 id="AtomicXXX"><a href="#AtomicXXX" class="headerlink" title="AtomicXXX"></a>AtomicXXX</h3><h3 id="wait-notify"><a href="#wait-notify" class="headerlink" title="wait notify"></a>wait notify</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/13/多线程笔记/" data-id="cl64cw1l0000fx8w25l8rzzf3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/08/13/MIT6.828 学习笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MIT6.828 学习笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/13/Mysql笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Mysql笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ansible/">Ansible</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mysql/">Mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/大数据/">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/安全/">安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/操作系统/">操作系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂记/">杂记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Ansible/" style="font-size: 10px;">Ansible</a> <a href="/tags/Mysql/" style="font-size: 10px;">Mysql</a> <a href="/tags/多线程/" style="font-size: 10px;">多线程</a> <a href="/tags/大数据/" style="font-size: 15px;">大数据</a> <a href="/tags/安全/" style="font-size: 10px;">安全</a> <a href="/tags/操作系统/" style="font-size: 20px;">操作系统</a> <a href="/tags/杂记/" style="font-size: 10px;">杂记</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/01/操作系统笔记/">操作系统笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/01/TCP-IP笔记/">TCP/IP笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/MIT6-828笔记/">MIT6.828 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/MIT6.828 学习笔记/">MIT6.828 学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/13/多线程笔记/">多线程笔记</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 Shengxin<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
